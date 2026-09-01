@@ -9,6 +9,7 @@ on:
     paths:
       - ".github/workflows/update-profile.yml"
       - "scripts/update_profile.py"
+      - "scripts/render_github_overview.py"
 
 permissions:
   contents: write
@@ -37,7 +38,9 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_USER: luceat-lux-vestra
           BLOG_FEED: https://blog.ox0.uk/rss/
-        run: python scripts/update_profile.py
+        run: |
+          python scripts/update_profile.py
+          python scripts/render_github_overview.py
 
       - name: Commit generated profile content
         run: |
