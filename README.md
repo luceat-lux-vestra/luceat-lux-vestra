@@ -122,9 +122,19 @@ A JetBrains IDE plugin that exports real database table metadata and relationshi
 
 <br /><br />
 
-<img
-  src="https://github-readme-activity-graph.vercel.app/graph?username=luceat-lux-vestra&theme=github-compact&hide_border=true"
-  alt="GitHub activity graph"
-/>
+<picture>
+  <source
+    srcset="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=luceat-lux-vestra&theme=github_dark"
+    media="(prefers-color-scheme: dark)"
+  />
+  <source
+    srcset="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=luceat-lux-vestra&theme=github"
+    media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
+  />
+  <img
+    src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=luceat-lux-vestra&theme=github"
+    alt="GitHub profile details"
+  />
+</picture>
 
 </div>
