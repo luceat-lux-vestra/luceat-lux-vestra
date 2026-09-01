@@ -104,7 +104,9 @@ A JetBrains IDE plugin that exports real database table metadata and relationshi
 ## Latest Writing
 
 <!-- LATEST-WRITING:START -->
-_Automatically refreshed from [blog.ox0.uk](https://blog.ox0.uk)._
+- [Spring Boot development works in Zed now](https://blog.ox0.uk/zed-spring-tools/) — 2026-07-26
+- [Right-click a table, get a Mermaid ERD — introducing erdMaid](https://blog.ox0.uk/erdmaid-en-2/) — 2026-07-26
+- [erdMaid: Export Database Tables to Perfect Mermaid ERDs](https://blog.ox0.uk/erdmaid-en/) — 2026-05-03
 <!-- LATEST-WRITING:END -->
 
 ---
@@ -112,7 +114,10 @@ _Automatically refreshed from [blog.ox0.uk](https://blog.ox0.uk)._
 ## Open Source Contributions
 
 <!-- OSS-CONTRIBUTIONS:START -->
-_Automatically refreshed from recent public PRs and issues in repositories I do not own._
+- **Issue** · [usebruno/bruno#9063: Windows System Proxy with a fixed proxy adds 20–30s delay per request, while manual proxy is fast](https://github.com/usebruno/bruno/issues/9063) — 2026-08-29
+- **PR** · [zed-industries/extensions#6875: Add Spring Tools extension](https://github.com/zed-industries/extensions/pull/6875) — 2026-08-18
+- **PR** · [usebruno/bruno-vscode#126: Fix: proxy settings not working — use proxy agents, parse system env vars, remove hardcoded defaults](https://github.com/usebruno/bruno-vscode/pull/126) — 2026-08-15
+- **Issue** · [yuin/rushdown#2: Safe Index/Segment APIs can invoke UB through unchecked string slicing](https://github.com/yuin/rushdown/issues/2) — 2026-08-12
 <!-- OSS-CONTRIBUTIONS:END -->
 
 ---
@@ -120,7 +125,11 @@ _Automatically refreshed from recent public PRs and issues in repositories I do 
 ## Recent Activity
 
 <!-- RECENT-ACTIVITY:START -->
-_Automatically refreshed from recent public GitHub activity._
+- **Reviewed PR** · [luceat-lux-vestra/scribium#223: pull request](https://github.com/luceat-lux-vestra/scribium/pull/223) — 2026-09-01
+- **PR opened** · [luceat-lux-vestra/zed-spring-tools#105: pull request](https://github.com/luceat-lux-vestra/zed-spring-tools/pull/105) — 2026-09-01
+- **PR opened** · [luceat-lux-vestra/crossinput#111: pull request](https://github.com/luceat-lux-vestra/crossinput/pull/111) — 2026-09-01
+- **Issue labeled** · [luceat-lux-vestra/scribium#237: governance: reconcile live GitHub repository settings](https://github.com/luceat-lux-vestra/scribium/issues/237) — 2026-09-01
+- **Issue labeled** · [luceat-lux-vestra/scribium#234: release: add package dry-run and dependency publishability checks](https://github.com/luceat-lux-vestra/scribium/issues/234) — 2026-09-01
 <!-- RECENT-ACTIVITY:END -->
 
 ---
