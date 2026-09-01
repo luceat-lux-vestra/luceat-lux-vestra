@@ -122,7 +122,7 @@ A JetBrains IDE plugin that exports real database table metadata and relationshi
 
 ---
 
-## Recent Activity
+## Recent Open Source Activity
 
 <!-- RECENT-ACTIVITY:START -->
 _No recent public activity in external repositories found._
