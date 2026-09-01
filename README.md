@@ -135,35 +135,17 @@ _No recent public activity in external repositories found._
 <div align="center">
 
 <picture>
-  <source
-    srcset="https://github-stats-extended.vercel.app/api?username=luceat-lux-vestra&show_icons=true&include_all_commits=true&hide_border=true&theme=dark"
-    media="(prefers-color-scheme: dark)"
-  />
-  <source
-    srcset="https://github-stats-extended.vercel.app/api?username=luceat-lux-vestra&show_icons=true&include_all_commits=true&hide_border=true"
-    media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
-  />
-  <img
-    src="https://github-stats-extended.vercel.app/api?username=luceat-lux-vestra&show_icons=true&include_all_commits=true&hide_border=true"
-    alt="GitHub stats"
-  />
+  <source srcset="./assets/github-stats-dark.svg" media="(prefers-color-scheme: dark)" />
+  <source srcset="./assets/github-stats-light.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)" />
+  <img src="./assets/github-stats-light.svg" alt="GitHub first-party public statistics" />
 </picture>
 
 <br /><br />
 
 <picture>
-  <source
-    srcset="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=luceat-lux-vestra&theme=github_dark"
-    media="(prefers-color-scheme: dark)"
-  />
-  <source
-    srcset="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=luceat-lux-vestra&theme=github"
-    media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
-  />
-  <img
-    src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=luceat-lux-vestra&theme=github"
-    alt="GitHub profile details"
-  />
+  <source srcset="./assets/github-contributions-dark.svg" media="(prefers-color-scheme: dark)" />
+  <source srcset="./assets/github-contributions-light.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)" />
+  <img src="./assets/github-contributions-light.svg" alt="GitHub public contributions over the last 365 days" />
 </picture>
 
 </div>
