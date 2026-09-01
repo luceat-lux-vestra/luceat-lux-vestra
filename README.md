@@ -135,17 +135,9 @@ _No recent public activity in external repositories found._
 <div align="center">
 
 <picture>
-  <source srcset="./assets/github-stats-dark.svg" media="(prefers-color-scheme: dark)" />
-  <source srcset="./assets/github-stats-light.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)" />
-  <img src="./assets/github-stats-light.svg" alt="GitHub first-party public statistics" />
-</picture>
-
-<br /><br />
-
-<picture>
-  <source srcset="./assets/github-contributions-dark.svg" media="(prefers-color-scheme: dark)" />
-  <source srcset="./assets/github-contributions-light.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)" />
-  <img src="./assets/github-contributions-light.svg" alt="GitHub public contributions over the last 365 days" />
+  <source srcset="./assets/github-overview-dark.svg" media="(prefers-color-scheme: dark)" />
+  <source srcset="./assets/github-overview-light.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)" />
+  <img src="./assets/github-overview-light.svg" alt="GitHub overview generated from first-party public data" />
 </picture>
 
 </div>
