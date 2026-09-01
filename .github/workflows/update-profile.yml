@@ -3,7 +3,7 @@ name: Update profile content
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 3 * * *"
+    - cron: "17 3 * * *" # 12:17 KST
   push:
     branches: [main]
     paths:
