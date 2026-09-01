@@ -138,17 +138,18 @@ def external_contributions() -> list[str]:
     ]
 
 
-def recent_activity() -> list[str]:
+def recent_open_source_activity() -> list[str]:
     events = github_json(f"/users/{USER}/events/public", {"per_page": 100})
     lines: list[str] = []
     push_included = False
-    profile_repo = f"{USER}/{USER}".lower()
+    own_repo_prefix = f"{USER.lower()}/"
 
     for event in events:
         event_type = event.get("type", "")
         repo = (event.get("repo") or {}).get("name", "")
-        if not repo or repo.lower() == profile_repo:
+        if not repo or repo.lower().startswith(own_repo_prefix):
             continue
+
         payload = event.get("payload") or {}
         date = iso_date(event.get("created_at"))
         repo_url = f"https://github.com/{repo}"
@@ -168,17 +169,30 @@ def recent_activity() -> list[str]:
             title = markdown_text(issue.get("title", "issue"))
             url = issue.get("html_url") or f"{repo_url}/issues/{number}"
             line = f"- **Issue {action}** · [{repo}#{number}: {title}]({url}) — {date}"
-        elif event_type == "ReleaseEvent":
-            release = payload.get("release") or {}
-            tag = markdown_text(release.get("tag_name", "release"))
-            url = release.get("html_url") or f"{repo_url}/releases"
-            line = f"- **Release** · [{repo} {tag}]({url}) — {date}"
+        elif event_type == "IssueCommentEvent":
+            issue = payload.get("issue") or {}
+            number = issue.get("number")
+            title = markdown_text(issue.get("title", "discussion"))
+            url = (payload.get("comment") or {}).get("html_url") or issue.get("html_url") or f"{repo_url}/issues/{number}"
+            label = "PR comment" if "pull_request" in issue else "Issue comment"
+            line = f"- **{label}** · [{repo}#{number}: {title}]({url}) — {date}"
         elif event_type == "PullRequestReviewEvent":
             pr = payload.get("pull_request") or {}
             number = pr.get("number")
             title = markdown_text(pr.get("title", "pull request"))
             url = pr.get("html_url") or f"{repo_url}/pull/{number}"
             line = f"- **Reviewed PR** · [{repo}#{number}: {title}]({url}) — {date}"
+        elif event_type == "PullRequestReviewCommentEvent":
+            pr = payload.get("pull_request") or {}
+            number = pr.get("number")
+            title = markdown_text(pr.get("title", "pull request"))
+            url = (payload.get("comment") or {}).get("html_url") or pr.get("html_url") or f"{repo_url}/pull/{number}"
+            line = f"- **PR review comment** · [{repo}#{number}: {title}]({url}) — {date}"
+        elif event_type == "ReleaseEvent":
+            release = payload.get("release") or {}
+            tag = markdown_text(release.get("tag_name", "release"))
+            url = release.get("html_url") or f"{repo_url}/releases"
+            line = f"- **Release** · [{repo} {tag}]({url}) — {date}"
         elif event_type == "CreateEvent":
             ref_type = payload.get("ref_type", "repository")
             ref = payload.get("ref")
@@ -201,7 +215,7 @@ def recent_activity() -> list[str]:
         if len(lines) == 5:
             break
 
-    return lines or ["_No recent public GitHub activity found._"]
+    return lines or ["_No recent public activity in external repositories found._"]
 
 
 def main() -> int:
@@ -211,7 +225,7 @@ def main() -> int:
     for section, loader in (
         ("writing", latest_writing),
         ("contrib", external_contributions),
-        ("activity", recent_activity),
+        ("activity", recent_open_source_activity),
     ):
         try:
             lines = loader()
