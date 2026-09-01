@@ -101,26 +101,9 @@ A JetBrains IDE plugin that exports real database table metadata and relationshi
 
 ---
 
-## GitHub
+## Activity
 
 <div align="center">
-
-<picture>
-  <source
-    srcset="https://github-stats-extended.vercel.app/api?username=luceat-lux-vestra&hide=commits,prs,issues&hide_rank=true&hide_border=true&theme=dark"
-    media="(prefers-color-scheme: dark)"
-  />
-  <source
-    srcset="https://github-stats-extended.vercel.app/api?username=luceat-lux-vestra&hide=commits,prs,issues&hide_rank=true&hide_border=true"
-    media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
-  />
-  <img
-    src="https://github-stats-extended.vercel.app/api?username=luceat-lux-vestra&hide=commits,prs,issues&hide_rank=true&hide_border=true"
-    alt="GitHub stats"
-  />
-</picture>
-
-<br /><br />
 
 <picture>
   <source
