@@ -125,11 +125,7 @@ A JetBrains IDE plugin that exports real database table metadata and relationshi
 ## Recent Activity
 
 <!-- RECENT-ACTIVITY:START -->
-- **Reviewed PR** · [luceat-lux-vestra/scribium#223: pull request](https://github.com/luceat-lux-vestra/scribium/pull/223) — 2026-09-01
-- **PR opened** · [luceat-lux-vestra/zed-spring-tools#105: pull request](https://github.com/luceat-lux-vestra/zed-spring-tools/pull/105) — 2026-09-01
-- **PR opened** · [luceat-lux-vestra/crossinput#111: pull request](https://github.com/luceat-lux-vestra/crossinput/pull/111) — 2026-09-01
-- **Issue labeled** · [luceat-lux-vestra/scribium#237: governance: reconcile live GitHub repository settings](https://github.com/luceat-lux-vestra/scribium/issues/237) — 2026-09-01
-- **Issue labeled** · [luceat-lux-vestra/scribium#234: release: add package dry-run and dependency publishability checks](https://github.com/luceat-lux-vestra/scribium/issues/234) — 2026-09-01
+_No recent public activity in external repositories found._
 <!-- RECENT-ACTIVITY:END -->
 
 ---
