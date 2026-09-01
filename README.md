@@ -101,23 +101,30 @@ A JetBrains IDE plugin that exports real database table metadata and relationshi
 
 ---
 
-## Activity
+## GitHub
 
 <div align="center">
 
 <picture>
   <source
-    srcset="https://github-readme-activity-graph.vercel.app/graph?username=luceat-lux-vestra&theme=github-compact&hide_border=true"
+    srcset="https://github-stats-extended.vercel.app/api?username=luceat-lux-vestra&show_icons=true&include_all_commits=true&hide_border=true&theme=dark"
     media="(prefers-color-scheme: dark)"
   />
   <source
-    srcset="https://github-readme-activity-graph.vercel.app/graph?username=luceat-lux-vestra&theme=github&hide_border=true"
+    srcset="https://github-stats-extended.vercel.app/api?username=luceat-lux-vestra&show_icons=true&include_all_commits=true&hide_border=true"
     media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
   />
   <img
-    src="https://github-readme-activity-graph.vercel.app/graph?username=luceat-lux-vestra&theme=github&hide_border=true"
-    alt="GitHub activity graph"
+    src="https://github-stats-extended.vercel.app/api?username=luceat-lux-vestra&show_icons=true&include_all_commits=true&hide_border=true"
+    alt="GitHub stats"
   />
 </picture>
+
+<br /><br />
+
+<img
+  src="https://github-readme-activity-graph.vercel.app/graph?username=luceat-lux-vestra&theme=github-compact&hide_border=true"
+  alt="GitHub activity graph"
+/>
 
 </div>
