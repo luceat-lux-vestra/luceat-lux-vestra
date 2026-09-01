@@ -101,6 +101,30 @@ A JetBrains IDE plugin that exports real database table metadata and relationshi
 
 ---
 
+## Latest Writing
+
+<!-- LATEST-WRITING:START -->
+_Automatically refreshed from [blog.ox0.uk](https://blog.ox0.uk)._
+<!-- LATEST-WRITING:END -->
+
+---
+
+## Open Source Contributions
+
+<!-- OSS-CONTRIBUTIONS:START -->
+_Automatically refreshed from recent public PRs and issues in repositories I do not own._
+<!-- OSS-CONTRIBUTIONS:END -->
+
+---
+
+## Recent Activity
+
+<!-- RECENT-ACTIVITY:START -->
+_Automatically refreshed from recent public GitHub activity._
+<!-- RECENT-ACTIVITY:END -->
+
+---
+
 ## GitHub
 
 <div align="center">
