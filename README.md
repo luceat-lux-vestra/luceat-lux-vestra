@@ -82,7 +82,7 @@ A Typora-style WYSIWYG Markdown editor for IntelliJ-based IDEs, built around a n
 </td>
 <td width="50%" valign="top">
 
-### [Scribium](https://github.com/luceat-lux-vestra/scribium)
+### [Arkst](https://github.com/luceat-lux-vestra/arkst)
 
 An independent Quarkdown-compatible document compiler and toolchain with a backend-neutral IR and Typst/PDF output pipeline.
 
