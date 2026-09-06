@@ -4,24 +4,63 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "17 3 * * *" # 12:17 KST
+  pull_request:
+    paths:
+      - "README.md"
+      - ".github/workflows/update-profile.yml"
+      - "scripts/update_selected_work.py"
+      - "tests/test_update_selected_work.py"
   push:
     branches: [main]
     paths:
       - ".github/workflows/update-profile.yml"
       - "scripts/update_profile.py"
+      - "scripts/update_selected_work.py"
       - "scripts/render_github_overview.py"
+      - "tests/test_update_selected_work.py"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: update-profile
+  group: update-profile-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  update:
+  validate:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    steps:
+      - name: Check out profile repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run profile updater tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Verify selected work resolves to current repositories
+        if: github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_USER: luceat-lux-vestra
+          STRICT_UPSTREAM: "1"
+        run: |
+          python scripts/update_selected_work.py
+          git diff --exit-code -- README.md
+
+  update:
+    if: github.event_name != 'pull_request'
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
     steps:
       - name: Check out profile repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -39,6 +78,7 @@ jobs:
           GITHUB_USER: luceat-lux-vestra
           BLOG_FEED: https://blog.ox0.uk/rss/
         run: |
+          python scripts/update_selected_work.py
           python scripts/update_profile.py
           python scripts/render_github_overview.py
 
