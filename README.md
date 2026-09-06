@@ -39,10 +39,12 @@ and I still enjoy understanding how software works beyond my primary stack.
 
 ## Selected Work
 
+<!-- SELECTED-WORK:START -->
 <table>
 <tr>
 <td width="50%" valign="top">
 
+<!-- repo-id:1303926791 -->
 ### [Zed Spring Tools](https://github.com/luceat-lux-vestra/zed-spring-tools)
 
 Spring Boot language intelligence for Zed, integrating Spring Tools with Zed's native language-server and editor capabilities.
@@ -50,6 +52,7 @@ Spring Boot language intelligence for Zed, integrating Spring Tools with Zed's n
 </td>
 <td width="50%" valign="top">
 
+<!-- repo-id:1315088383 -->
 ### [OxideBatch](https://github.com/luceat-lux-vestra/oxide-batch)
 
 A framework for reliable, restartable batch processing built around durable execution semantics, explicit transaction boundaries, recovery, and evidence-driven compatibility.
@@ -59,13 +62,15 @@ A framework for reliable, restartable batch processing built around durable exec
 <tr>
 <td width="50%" valign="top">
 
-### [zMyBatis](https://github.com/luceat-lux-vestra/zMyBatis-public)
+<!-- repo-id:1169294894 -->
+### [zMyBatis](https://github.com/luceat-lux-vestra/zMyBatis)
 
 A JetBrains IDE plugin for evaluating MyBatis dynamic SQL with parameters and executing the resolved native SQL through the IDE's database tooling.
 
 </td>
 <td width="50%" valign="top">
 
+<!-- repo-id:1320678688 -->
 ### [CrossInput](https://github.com/luceat-lux-vestra/crossinput)
 
 A DeX-first macOS-to-Android input bridge that hands keyboard and pointer control across devices using ADB and native input paths.
@@ -75,13 +80,15 @@ A DeX-first macOS-to-Android input bridge that hands keyboard and pointer contro
 <tr>
 <td width="50%" valign="top">
 
-### [MarkFlow](https://github.com/luceat-lux-vestra/MarkFlow-public)
+<!-- repo-id:1198454552 -->
+### [MarkFlow](https://github.com/luceat-lux-vestra/MarkFlow)
 
 A Typora-style WYSIWYG Markdown editor for IntelliJ-based IDEs, built around a native IntelliJ `FileEditor`, JCEF, and Milkdown.
 
 </td>
 <td width="50%" valign="top">
 
+<!-- repo-id:1320383839 -->
 ### [Arkst](https://github.com/luceat-lux-vestra/arkst)
 
 An independent Quarkdown-compatible document compiler and toolchain with a backend-neutral IR and Typst/PDF output pipeline.
@@ -91,13 +98,15 @@ An independent Quarkdown-compatible document compiler and toolchain with a backe
 <tr>
 <td colspan="2" valign="top">
 
-### [erdMaid](https://github.com/luceat-lux-vestra/erdMaid-public)
+<!-- repo-id:1214528659 -->
+### [erdMaid](https://github.com/luceat-lux-vestra/erdMaid)
 
 A JetBrains IDE plugin that exports real database table metadata and relationships as Mermaid ER diagrams.
 
 </td>
 </tr>
 </table>
+<!-- SELECTED-WORK:END -->
 
 ---
 
