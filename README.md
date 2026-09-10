@@ -123,10 +123,10 @@ A JetBrains IDE plugin that exports real database table metadata and relationshi
 ## Open Source Contributions
 
 <!-- OSS-CONTRIBUTIONS:START -->
+- **Issue** · [zed-industries/zed#61863: Inlay hint label parts drop the LSP command field, so hint-embedded actions can never be invoked](https://github.com/zed-industries/zed/issues/61863) — 2026-09-09
 - **Issue** · [usebruno/bruno#9063: Windows System Proxy with a fixed proxy adds 20–30s delay per request, while manual proxy is fast](https://github.com/usebruno/bruno/issues/9063) — 2026-08-29
 - **PR** · [zed-industries/extensions#6875: Add Spring Tools extension](https://github.com/zed-industries/extensions/pull/6875) — 2026-08-18
 - **PR** · [usebruno/bruno-vscode#126: Fix: proxy settings not working — use proxy agents, parse system env vars, remove hardcoded defaults](https://github.com/usebruno/bruno-vscode/pull/126) — 2026-08-15
-- **Issue** · [yuin/rushdown#2: Safe Index/Segment APIs can invoke UB through unchecked string slicing](https://github.com/yuin/rushdown/issues/2) — 2026-08-12
 <!-- OSS-CONTRIBUTIONS:END -->
 
 ---
