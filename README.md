@@ -47,6 +47,10 @@ and I still enjoy understanding how software works beyond my primary stack.
 <!-- repo-id:1303926791 -->
 ### [Zed Spring Tools](https://github.com/luceat-lux-vestra/zed-spring-tools)
 
+<a href="https://github.com/luceat-lux-vestra/zed-spring-tools/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/luceat-lux-vestra/zed-spring-tools/ci.yml?branch=main&style=flat-square&label=CI" alt="CI" /></a>
+<img src="https://img.shields.io/badge/Zed-extension-555555?style=flat-square" alt="Zed extension" />
+<img src="https://img.shields.io/badge/Spring_Tools-6DB33F?style=flat-square&logo=spring&logoColor=white" alt="Spring Tools" />
+
 Spring Boot language intelligence for Zed, integrating Spring Tools with Zed's native language-server and editor capabilities.
 
 </td>
@@ -54,6 +58,10 @@ Spring Boot language intelligence for Zed, integrating Spring Tools with Zed's n
 
 <!-- repo-id:1315088383 -->
 ### [OxideBatch](https://github.com/luceat-lux-vestra/oxide-batch)
+
+<a href="https://github.com/luceat-lux-vestra/oxide-batch/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/luceat-lux-vestra/oxide-batch/ci.yml?branch=main&style=flat-square&label=CI" alt="CI" /></a>
+<a href="https://crates.io/crates/oxide-batch"><img src="https://img.shields.io/crates/v/oxide-batch?style=flat-square&label=crates.io" alt="crates.io" /></a>
+<a href="https://crates.io/crates/oxide-batch"><img src="https://img.shields.io/crates/d/oxide-batch?style=flat-square&label=downloads" alt="crates.io downloads" /></a>
 
 A framework for reliable, restartable batch processing built around durable execution semantics, explicit transaction boundaries, recovery, and evidence-driven compatibility.
 
@@ -65,6 +73,10 @@ A framework for reliable, restartable batch processing built around durable exec
 <!-- repo-id:1169294894 -->
 ### [zMyBatis](https://github.com/luceat-lux-vestra/zMyBatis)
 
+<a href="https://github.com/luceat-lux-vestra/zMyBatis/actions/workflows/build.yml"><img src="https://img.shields.io/github/actions/workflow/status/luceat-lux-vestra/zMyBatis/build.yml?branch=main&style=flat-square&label=Build" alt="Build" /></a>
+<a href="https://plugins.jetbrains.com/plugin/index?xmlId=com.algorist.zMyBatis"><img src="https://img.shields.io/jetbrains/plugin/v/com.algorist.zMyBatis?style=flat-square&label=Marketplace" alt="Marketplace version" /></a>
+<a href="https://plugins.jetbrains.com/plugin/index?xmlId=com.algorist.zMyBatis"><img src="https://img.shields.io/jetbrains/plugin/d/com.algorist.zMyBatis?style=flat-square&label=downloads" alt="Downloads" /></a>
+
 A JetBrains IDE plugin for evaluating MyBatis dynamic SQL with parameters and executing the resolved native SQL through the IDE's database tooling.
 
 </td>
@@ -72,6 +84,10 @@ A JetBrains IDE plugin for evaluating MyBatis dynamic SQL with parameters and ex
 
 <!-- repo-id:1320678688 -->
 ### [CrossInput](https://github.com/luceat-lux-vestra/crossinput)
+
+<a href="https://github.com/luceat-lux-vestra/crossinput/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/luceat-lux-vestra/crossinput/ci.yml?branch=main&style=flat-square&label=CI" alt="CI" /></a>
+<a href="https://github.com/luceat-lux-vestra/crossinput/releases"><img src="https://img.shields.io/github/v/release/luceat-lux-vestra/crossinput?style=flat-square&label=Release" alt="Release" /></a>
+<img src="https://img.shields.io/badge/macOS_%E2%86%92_Android-555555?style=flat-square" alt="macOS to Android" />
 
 A DeX-first macOS-to-Android input bridge that hands keyboard and pointer control across devices using ADB and native input paths.
 
@@ -83,6 +99,10 @@ A DeX-first macOS-to-Android input bridge that hands keyboard and pointer contro
 <!-- repo-id:1198454552 -->
 ### [MarkFlow](https://github.com/luceat-lux-vestra/MarkFlow)
 
+<a href="https://github.com/luceat-lux-vestra/MarkFlow/actions/workflows/build.yml"><img src="https://img.shields.io/github/actions/workflow/status/luceat-lux-vestra/MarkFlow/build.yml?branch=main&style=flat-square&label=Build" alt="Build" /></a>
+<a href="https://plugins.jetbrains.com/plugin/index?xmlId=com.algorist.markflow"><img src="https://img.shields.io/jetbrains/plugin/v/com.algorist.markflow?style=flat-square&label=Marketplace" alt="Marketplace version" /></a>
+<a href="https://plugins.jetbrains.com/plugin/index?xmlId=com.algorist.markflow"><img src="https://img.shields.io/jetbrains/plugin/d/com.algorist.markflow?style=flat-square&label=downloads" alt="Downloads" /></a>
+
 A Typora-style WYSIWYG Markdown editor for IntelliJ-based IDEs, built around a native IntelliJ `FileEditor`, JCEF, and Milkdown.
 
 </td>
@@ -90,6 +110,9 @@ A Typora-style WYSIWYG Markdown editor for IntelliJ-based IDEs, built around a n
 
 <!-- repo-id:1320383839 -->
 ### [Arkst](https://github.com/luceat-lux-vestra/arkst)
+
+<a href="https://github.com/luceat-lux-vestra/arkst/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/luceat-lux-vestra/arkst/ci.yml?branch=main&style=flat-square&label=CI" alt="CI" /></a>
+<img src="https://img.shields.io/badge/status-experimental-orange?style=flat-square" alt="Experimental" />
 
 An independent Quarkdown-compatible document compiler and toolchain with a backend-neutral IR and Typst/PDF output pipeline.
 
@@ -100,6 +123,10 @@ An independent Quarkdown-compatible document compiler and toolchain with a backe
 
 <!-- repo-id:1214528659 -->
 ### [erdMaid](https://github.com/luceat-lux-vestra/erdMaid)
+
+<a href="https://github.com/luceat-lux-vestra/erdMaid/actions/workflows/build.yml"><img src="https://img.shields.io/github/actions/workflow/status/luceat-lux-vestra/erdMaid/build.yml?branch=main&style=flat-square&label=Build" alt="Build" /></a>
+<a href="https://plugins.jetbrains.com/plugin/index?xmlId=com.algorist.erdmaid"><img src="https://img.shields.io/jetbrains/plugin/v/com.algorist.erdmaid?style=flat-square&label=Marketplace" alt="Marketplace version" /></a>
+<a href="https://plugins.jetbrains.com/plugin/index?xmlId=com.algorist.erdmaid"><img src="https://img.shields.io/jetbrains/plugin/d/com.algorist.erdmaid?style=flat-square&label=downloads" alt="Downloads" /></a>
 
 A JetBrains IDE plugin that exports real database table metadata and relationships as Mermaid ER diagrams.
 
