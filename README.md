@@ -150,9 +150,9 @@ A JetBrains IDE plugin that exports real database table metadata and relationshi
 ## Open Source Contributions
 
 <!-- OSS-CONTRIBUTIONS:START -->
+- **PR** · [zed-industries/extensions#6875: Add Spring Tools extension](https://github.com/zed-industries/extensions/pull/6875) — 2026-09-17
 - **Issue** · [zed-industries/zed#61865: Document highlights query only the first capable language server, so a secondary server's highlights never appear](https://github.com/zed-industries/zed/issues/61865) — 2026-09-11
 - **Issue** · [usebruno/bruno#9063: Windows System Proxy with a fixed proxy adds 20–30s delay per request, while manual proxy is fast](https://github.com/usebruno/bruno/issues/9063) — 2026-08-29
-- **PR** · [zed-industries/extensions#6875: Add Spring Tools extension](https://github.com/zed-industries/extensions/pull/6875) — 2026-08-18
 - **PR** · [usebruno/bruno-vscode#126: Fix: proxy settings not working — use proxy agents, parse system env vars, remove hardcoded defaults](https://github.com/usebruno/bruno-vscode/pull/126) — 2026-08-15
 <!-- OSS-CONTRIBUTIONS:END -->
 
