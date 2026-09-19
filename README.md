@@ -137,7 +137,7 @@ A JetBrains IDE plugin that exports real database table metadata and relationshi
 
 ---
 
-## Latest Writing
+## Publications
 
 <!-- LATEST-WRITING:START -->
 - [Spring Boot development works in Zed now](https://blog.ox0.uk/zed-spring-tools/) — 2026-07-26
