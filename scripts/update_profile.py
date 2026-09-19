@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import base64
 import email.utils
 import html
 import json
@@ -19,6 +20,8 @@ TOKEN = os.environ.get("GITHUB_TOKEN", "")
 README_PATH = Path(os.environ.get("README_PATH", "README.md"))
 ASSETS_DIR = Path(os.environ.get("ASSETS_DIR", "assets"))
 BLOG_FEED = os.environ.get("BLOG_FEED", "https://blog.ox0.uk/rss/")
+BLOG_SOURCE_REPO = os.environ.get("BLOG_SOURCE_REPO", "luceat-lux-vestra/ox0-blog")
+BLOG_SOURCE_REF = os.environ.get("BLOG_SOURCE_REF", "main")
 GITHUB_API = "https://api.github.com"
 GITHUB_GRAPHQL = "https://api.github.com/graphql"
 USER_AGENT = "luceat-lux-vestra-profile-updater/2.0"
@@ -36,9 +39,10 @@ def request_bytes(
     accept: str = "application/vnd.github+json",
     method: str = "GET",
     data: bytes | None = None,
+    authenticated: bool = True,
 ) -> bytes:
     headers = {"User-Agent": USER_AGENT, "Accept": accept}
-    if TOKEN and url.startswith(GITHUB_API):
+    if authenticated and TOKEN and url.startswith(GITHUB_API):
         headers["Authorization"] = f"Bearer {TOKEN}"
         headers["X-GitHub-Api-Version"] = "2022-11-28"
     if data is not None:
@@ -53,6 +57,13 @@ def github_json(path: str, params: dict[str, str | int] | None = None) -> Any:
     if params:
         url += "?" + urllib.parse.urlencode(params)
     return json.loads(request_bytes(url).decode("utf-8"))
+
+
+def public_github_json(path: str, params: dict[str, str | int] | None = None) -> Any:
+    url = f"{GITHUB_API}{path}"
+    if params:
+        url += "?" + urllib.parse.urlencode(params)
+    return json.loads(request_bytes(url, authenticated=False).decode("utf-8"))
 
 
 def github_graphql(query: str, variables: dict[str, Any]) -> dict[str, Any]:
@@ -89,7 +100,60 @@ def update_section(readme: str, section: str, lines: list[str]) -> str:
     return pattern.sub(lambda _: f"{start}\n{body}\n{end}", readme, count=1)
 
 
+
+def article_locale_slugs() -> dict[str, str]:
+    entries = public_github_json(
+        f"/repos/{BLOG_SOURCE_REPO}/contents/posts",
+        {"ref": BLOG_SOURCE_REF},
+    )
+    if not isinstance(entries, list):
+        raise RuntimeError("blog source posts listing is not a directory")
+
+    locale_by_slug: dict[str, str] = {}
+    for entry in entries:
+        if entry.get("type") != "dir":
+            continue
+        name = str(entry.get("name") or "")
+        if not name:
+            continue
+        article = public_github_json(
+            f"/repos/{BLOG_SOURCE_REPO}/contents/posts/{urllib.parse.quote(name, safe='')}/article.json",
+            {"ref": BLOG_SOURCE_REF},
+        )
+        if article.get("encoding") != "base64" or not article.get("content"):
+            raise RuntimeError(f"Article manifest is not available as base64 content: {name}")
+        try:
+            manifest = json.loads(base64.b64decode(article["content"]).decode("utf-8"))
+        except (ValueError, UnicodeDecodeError) as exc:
+            raise RuntimeError(f"invalid Article manifest JSON: {name}") from exc
+
+        variants = manifest.get("variants")
+        if not isinstance(variants, list):
+            raise RuntimeError(f"Article manifest variants are missing: {name}")
+        for variant in variants:
+            if not isinstance(variant, dict):
+                raise RuntimeError(f"Article manifest variant is malformed: {name}")
+            locale = str(variant.get("locale") or "").strip()
+            slug = str(variant.get("slug") or "").strip()
+            if not locale or not slug:
+                raise RuntimeError(f"Article manifest locale/slug is missing: {name}")
+            previous = locale_by_slug.get(slug)
+            if previous is not None and previous != locale:
+                raise RuntimeError(f"Article slug maps to multiple locales: {slug}")
+            locale_by_slug[slug] = locale
+
+    if not locale_by_slug:
+        raise RuntimeError("blog source returned no Article locale projections")
+    return locale_by_slug
+
+
+def feed_entry_slug(link: str) -> str:
+    path = urllib.parse.urlparse(link).path.rstrip("/")
+    return urllib.parse.unquote(path.rsplit("/", 1)[-1]) if path else ""
+
+
 def latest_writing() -> list[str]:
+    locale_by_slug = article_locale_slugs()
     data = request_bytes(BLOG_FEED, accept="application/rss+xml, application/xml;q=0.9, */*;q=0.8")
     root = ET.fromstring(data)
     posts: list[tuple[datetime, str, str]] = []
@@ -97,7 +161,15 @@ def latest_writing() -> list[str]:
         title = (item.findtext("title") or "").strip()
         link = (item.findtext("link") or "").strip()
         published = (item.findtext("pubDate") or "").strip()
-        if not title or not link or re.search(r"[가-힣]", title):
+        if not title or not link:
+            continue
+        slug = feed_entry_slug(link)
+        managed_locale = locale_by_slug.get(slug)
+        if managed_locale is not None:
+            if managed_locale != "en":
+                continue
+        elif re.search(r"[가-힣]", title):
+            # Pre-Article legacy entries have no canonical locale metadata.
             continue
         try:
             dt = email.utils.parsedate_to_datetime(published)
