@@ -2,14 +2,17 @@ name: Update profile content
 
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: [blog-publication]
   schedule:
-    - cron: "17 3 * * *" # 12:17 KST
+    - cron: "17 * * * *" # hourly fallback/self-heal; publication dispatch is the primary trigger
   pull_request:
     paths:
       - "README.md"
       - ".github/workflows/update-profile.yml"
       - "scripts/update_selected_work.py"
       - "tests/test_update_selected_work.py"
+      - "tests/test_update_profile_workflow.py"
   push:
     branches: [main]
     paths:
@@ -18,6 +21,7 @@ on:
       - "scripts/update_selected_work.py"
       - "scripts/render_github_overview.py"
       - "tests/test_update_selected_work.py"
+      - "tests/test_update_profile_workflow.py"
 
 permissions:
   contents: read
