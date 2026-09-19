@@ -140,9 +140,9 @@ A JetBrains IDE plugin that exports real database table metadata and relationshi
 ## Publications
 
 <!-- LATEST-WRITING:START -->
+- [Is RequestScopeBean an Alternative, or Just Another Global State?](https://blog.ox0.uk/request-scope-bean-context-boundary-en/) — 2026-09-19
 - [Spring Boot development works in Zed now](https://blog.ox0.uk/zed-spring-tools/) — 2026-07-26
 - [Right-click a table, get a Mermaid ERD — introducing erdMaid](https://blog.ox0.uk/erdmaid-en-2/) — 2026-07-26
-- [erdMaid: Export Database Tables to Perfect Mermaid ERDs](https://blog.ox0.uk/erdmaid-en/) — 2026-05-03
 <!-- LATEST-WRITING:END -->
 
 ---
