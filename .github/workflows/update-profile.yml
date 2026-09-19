@@ -10,7 +10,9 @@ on:
     paths:
       - "README.md"
       - ".github/workflows/update-profile.yml"
+      - "scripts/update_profile.py"
       - "scripts/update_selected_work.py"
+      - "tests/test_publications_locale_selection.py"
       - "tests/test_update_selected_work.py"
       - "tests/test_update_profile_workflow.py"
   push:
@@ -81,6 +83,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_USER: luceat-lux-vestra
           BLOG_FEED: https://blog.ox0.uk/rss/
+          BLOG_SOURCE_REPO: luceat-lux-vestra/ox0-blog
+          BLOG_SOURCE_REF: main
         run: |
           python scripts/update_selected_work.py
           python scripts/update_profile.py
