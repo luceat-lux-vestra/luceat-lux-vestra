@@ -70,6 +70,7 @@ A framework for reliable, restartable batch processing built around durable exec
 <tr>
 <td width="50%" valign="top">
 
+<img src="./assets/project-logos/zmybatis.svg" width="48" height="48" align="right" alt="zMyBatis logo" />
 <!-- repo-id:1169294894 -->
 ### [zMyBatis](https://github.com/luceat-lux-vestra/zMyBatis)
 
@@ -96,6 +97,7 @@ A DeX-first macOS-to-Android input bridge that hands keyboard and pointer contro
 <tr>
 <td width="50%" valign="top">
 
+<img src="./assets/project-logos/markflow.svg" width="48" height="48" align="right" alt="MarkFlow logo" />
 <!-- repo-id:1198454552 -->
 ### [MarkFlow](https://github.com/luceat-lux-vestra/MarkFlow)
 
@@ -121,6 +123,7 @@ An independent Quarkdown-compatible document compiler and toolchain with a backe
 <tr>
 <td colspan="2" valign="top">
 
+<img src="./assets/project-logos/erdmaid.svg" width="48" height="48" align="right" alt="erdMaid logo" />
 <!-- repo-id:1214528659 -->
 ### [erdMaid](https://github.com/luceat-lux-vestra/erdMaid)
 
