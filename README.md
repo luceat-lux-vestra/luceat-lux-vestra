@@ -70,7 +70,7 @@ A framework for reliable, restartable batch processing built around durable exec
 <tr>
 <td width="50%" valign="top">
 
-<a href="https://github.com/luceat-lux-vestra/zMyBatis"><picture><source srcset="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/zmybatis-dark.svg" media="(prefers-color-scheme: dark)" /><source srcset="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/zmybatis.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)" /><img src="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/zmybatis.svg" width="48" height="48" align="right" alt="zMyBatis logo" /></picture></a>
+<a href="https://github.com/luceat-lux-vestra/zMyBatis"><picture><source srcset="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/zmybatis-dark.svg" media="(prefers-color-scheme: dark)" /><source srcset="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/zmybatis.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)" /><img src="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/zmybatis.svg" width="24" height="24" align="right" alt="zMyBatis logo" /></picture></a>
 <!-- repo-id:1169294894 -->
 ### [zMyBatis](https://github.com/luceat-lux-vestra/zMyBatis)
 
@@ -83,7 +83,7 @@ A JetBrains IDE plugin for evaluating MyBatis dynamic SQL with parameters and ex
 </td>
 <td width="50%" valign="top">
 
-<a href="https://github.com/luceat-lux-vestra/crossinput"><img src="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/crossinput.svg" width="48" height="48" align="right" alt="CrossInput logo" /></a>
+<a href="https://github.com/luceat-lux-vestra/crossinput"><img src="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/crossinput.svg" width="24" height="24" align="right" alt="CrossInput logo" /></a>
 <!-- repo-id:1320678688 -->
 ### [CrossInput](https://github.com/luceat-lux-vestra/crossinput)
 
@@ -98,7 +98,7 @@ A DeX-first macOS-to-Android input bridge that hands keyboard and pointer contro
 <tr>
 <td width="50%" valign="top">
 
-<a href="https://github.com/luceat-lux-vestra/MarkFlow"><picture><source srcset="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/markflow-dark.svg" media="(prefers-color-scheme: dark)" /><source srcset="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/markflow.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)" /><img src="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/markflow.svg" width="48" height="48" align="right" alt="MarkFlow logo" /></picture></a>
+<a href="https://github.com/luceat-lux-vestra/MarkFlow"><picture><source srcset="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/markflow-dark.svg" media="(prefers-color-scheme: dark)" /><source srcset="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/markflow.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)" /><img src="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/markflow.svg" width="24" height="24" align="right" alt="MarkFlow logo" /></picture></a>
 <!-- repo-id:1198454552 -->
 ### [MarkFlow](https://github.com/luceat-lux-vestra/MarkFlow)
 
@@ -124,7 +124,7 @@ An independent Quarkdown-compatible document compiler and toolchain with a backe
 <tr>
 <td colspan="2" valign="top">
 
-<a href="https://github.com/luceat-lux-vestra/erdMaid"><picture><source srcset="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/erdmaid-dark.svg" media="(prefers-color-scheme: dark)" /><source srcset="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/erdmaid.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)" /><img src="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/erdmaid.svg" width="48" height="48" align="right" alt="erdMaid logo" /></picture></a>
+<a href="https://github.com/luceat-lux-vestra/erdMaid"><picture><source srcset="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/erdmaid-dark.svg" media="(prefers-color-scheme: dark)" /><source srcset="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/erdmaid.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)" /><img src="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/erdmaid.svg" width="24" height="24" align="right" alt="erdMaid logo" /></picture></a>
 <!-- repo-id:1214528659 -->
 ### [erdMaid](https://github.com/luceat-lux-vestra/erdMaid)
 
