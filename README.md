@@ -83,6 +83,7 @@ A JetBrains IDE plugin for evaluating MyBatis dynamic SQL with parameters and ex
 </td>
 <td width="50%" valign="top">
 
+<a href="https://github.com/luceat-lux-vestra/crossinput"><img src="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/crossinput.svg" width="48" height="48" align="right" alt="CrossInput logo" /></a>
 <!-- repo-id:1320678688 -->
 ### [CrossInput](https://github.com/luceat-lux-vestra/crossinput)
 
