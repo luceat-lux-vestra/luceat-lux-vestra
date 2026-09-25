@@ -55,14 +55,14 @@ class SelectedWorkTests(unittest.TestCase):
 
     def test_update_supports_inline_logo_in_heading(self) -> None:
         original = (
-            "before\\n"
-            f"{MODULE.START_MARKER}\\n"
-            "<!-- repo-id:100 -->\\n"
-            "### <a href=\\\"https://github.com/luceat-lux-vestra/Project-A-old\\\">"
-            "<img src=\\\"logo.svg\\\" width=\\\"24\\\" height=\\\"24\\\" alt=\\\"Project A logo\\\" /></a> "
-            "[Project A](https://github.com/luceat-lux-vestra/Project-A-old)\\n"
-            f"{MODULE.END_MARKER}\\n"
-            "after\\n"
+            "before\n"
+            f"{MODULE.START_MARKER}\n"
+            "<!-- repo-id:100 -->\n"
+            "### <a href=\"https://github.com/luceat-lux-vestra/Project-A-old\">"
+            "<img src=\"logo.svg\" width=\"24\" height=\"24\" alt=\"Project A logo\" /></a> "
+            "[Project A](https://github.com/luceat-lux-vestra/Project-A-old)\n"
+            f"{MODULE.END_MARKER}\n"
+            "after\n"
         )
 
         updated = MODULE.update_selected_work(
@@ -75,10 +75,10 @@ class SelectedWorkTests(unittest.TestCase):
             updated,
         )
         self.assertIn(
-            "<a href=\\\"https://github.com/luceat-lux-vestra/Project-A-old\\\">",
+            "<a href=\"https://github.com/luceat-lux-vestra/Project-A-old\">",
             updated,
         )
-        self.assertIn("<img src=\\\"logo.svg\\\"", updated)
+        self.assertIn("<img src=\"logo.svg\"", updated)
 
     def test_collect_repo_ids_rejects_unannotated_selected_heading(self) -> None:
         block = (
