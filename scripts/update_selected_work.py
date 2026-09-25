@@ -21,13 +21,13 @@ START_MARKER = "<!-- SELECTED-WORK:START -->"
 END_MARKER = "<!-- SELECTED-WORK:END -->"
 
 REPO_LINK_PATTERN = re.compile(
-    r"(?P<prefix><!--\s*repo-id:(?P<repo_id>\d+)\s*-->\s*\n"
-    r"### \[[^\]\n]+\]\()"
-    r"(?P<url>https://github\.com/[^)\s]+)"
-    r"(?P<suffix>\))"
+    r"(?P<prefix><!--\\s*repo-id:(?P<repo_id>\\d+)\\s*-->\\s*\\n"
+    r"### [^\\n]*?\\[[^\\]\\n]+\\]\\()"
+    r"(?P<url>https://github\\.com/[^)\\s]+)"
+    r"(?P<suffix>\\)[^\\n]*)"
 )
 SELECTED_HEADING_PATTERN = re.compile(
-    r"^### \[[^\]\n]+\]\(https://github\.com/[^)\s]+\)$",
+    r"^### [^\\n]*?\\[[^\\]\\n]+\\]\\(https://github\\.com/[^)\\s]+\\)[^\\n]*$",
     re.MULTILINE,
 )
 
