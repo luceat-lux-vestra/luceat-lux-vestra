@@ -48,6 +48,7 @@ and I still enjoy understanding how software works beyond my primary stack.
 ### [Zed Spring Tools](https://github.com/luceat-lux-vestra/zed-spring-tools)
 
 <a href="https://github.com/luceat-lux-vestra/zed-spring-tools/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/luceat-lux-vestra/zed-spring-tools/ci.yml?branch=main&style=flat-square&label=CI" alt="CI" /></a>
+<a href="https://github.com/luceat-lux-vestra/zed-spring-tools/stargazers"><img src="https://img.shields.io/github/stars/luceat-lux-vestra/zed-spring-tools?style=flat-square&label=Stars" alt="GitHub Stars" /></a>
 <img src="https://img.shields.io/badge/Zed-extension-555555?style=flat-square" alt="Zed extension" />
 <img src="https://img.shields.io/badge/Spring_Tools-6DB33F?style=flat-square&logo=spring&logoColor=white" alt="Spring Tools" />
 
@@ -60,6 +61,7 @@ Spring Boot language intelligence for Zed, integrating Spring Tools with Zed's n
 ### [OxideBatch](https://github.com/luceat-lux-vestra/oxide-batch)
 
 <a href="https://github.com/luceat-lux-vestra/oxide-batch/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/luceat-lux-vestra/oxide-batch/ci.yml?branch=main&style=flat-square&label=CI" alt="CI" /></a>
+<a href="https://github.com/luceat-lux-vestra/oxide-batch/stargazers"><img src="https://img.shields.io/github/stars/luceat-lux-vestra/oxide-batch?style=flat-square&label=Stars" alt="GitHub Stars" /></a>
 <a href="https://crates.io/crates/oxide-batch"><img src="https://img.shields.io/crates/v/oxide-batch?style=flat-square&label=crates.io" alt="crates.io" /></a>
 <a href="https://crates.io/crates/oxide-batch"><img src="https://img.shields.io/crates/d/oxide-batch?style=flat-square&label=downloads" alt="crates.io downloads" /></a>
 
@@ -74,6 +76,7 @@ A framework for reliable, restartable batch processing built around durable exec
 ### <a href="https://github.com/luceat-lux-vestra/zMyBatis"><img src="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/zmybatis-themed.svg" width="20" height="20" align="top" alt="zMyBatis logo" /></a> [zMyBatis](https://github.com/luceat-lux-vestra/zMyBatis)
 
 <a href="https://github.com/luceat-lux-vestra/zMyBatis/actions/workflows/build.yml"><img src="https://img.shields.io/github/actions/workflow/status/luceat-lux-vestra/zMyBatis/build.yml?branch=main&style=flat-square&label=Build" alt="Build" /></a>
+<a href="https://github.com/luceat-lux-vestra/zMyBatis/stargazers"><img src="https://img.shields.io/github/stars/luceat-lux-vestra/zMyBatis?style=flat-square&label=Stars" alt="GitHub Stars" /></a>
 <a href="https://plugins.jetbrains.com/plugin/index?xmlId=com.algorist.zMyBatis"><img src="https://img.shields.io/jetbrains/plugin/v/com.algorist.zMyBatis?style=flat-square&label=Marketplace" alt="Marketplace version" /></a>
 <a href="https://plugins.jetbrains.com/plugin/index?xmlId=com.algorist.zMyBatis"><img src="https://img.shields.io/jetbrains/plugin/d/com.algorist.zMyBatis?style=flat-square&label=downloads" alt="Downloads" /></a>
 
@@ -86,6 +89,7 @@ A JetBrains IDE plugin for evaluating MyBatis dynamic SQL with parameters and ex
 ### <a href="https://github.com/luceat-lux-vestra/crossinput"><img src="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/crossinput.svg" width="20" height="20" align="top" alt="CrossInput logo" /></a> [CrossInput](https://github.com/luceat-lux-vestra/crossinput)
 
 <a href="https://github.com/luceat-lux-vestra/crossinput/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/luceat-lux-vestra/crossinput/ci.yml?branch=main&style=flat-square&label=CI" alt="CI" /></a>
+<a href="https://github.com/luceat-lux-vestra/crossinput/stargazers"><img src="https://img.shields.io/github/stars/luceat-lux-vestra/crossinput?style=flat-square&label=Stars" alt="GitHub Stars" /></a>
 <a href="https://github.com/luceat-lux-vestra/crossinput/releases"><img src="https://img.shields.io/github/v/release/luceat-lux-vestra/crossinput?style=flat-square&label=Release" alt="Release" /></a>
 <img src="https://img.shields.io/badge/macOS_%E2%86%92_Android-555555?style=flat-square" alt="macOS to Android" />
 
@@ -100,6 +104,7 @@ A DeX-first macOS-to-Android input bridge that hands keyboard and pointer contro
 ### <a href="https://github.com/luceat-lux-vestra/MarkFlow"><img src="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/markflow-themed.svg" width="20" height="20" align="top" alt="MarkFlow logo" /></a> [MarkFlow](https://github.com/luceat-lux-vestra/MarkFlow)
 
 <a href="https://github.com/luceat-lux-vestra/MarkFlow/actions/workflows/build.yml"><img src="https://img.shields.io/github/actions/workflow/status/luceat-lux-vestra/MarkFlow/build.yml?branch=main&style=flat-square&label=Build" alt="Build" /></a>
+<a href="https://github.com/luceat-lux-vestra/MarkFlow/stargazers"><img src="https://img.shields.io/github/stars/luceat-lux-vestra/MarkFlow?style=flat-square&label=Stars" alt="GitHub Stars" /></a>
 <a href="https://plugins.jetbrains.com/plugin/index?xmlId=com.algorist.markflow"><img src="https://img.shields.io/jetbrains/plugin/v/com.algorist.markflow?style=flat-square&label=Marketplace" alt="Marketplace version" /></a>
 <a href="https://plugins.jetbrains.com/plugin/index?xmlId=com.algorist.markflow"><img src="https://img.shields.io/jetbrains/plugin/d/com.algorist.markflow?style=flat-square&label=downloads" alt="Downloads" /></a>
 
@@ -112,6 +117,7 @@ A Typora-style WYSIWYG Markdown editor for IntelliJ-based IDEs, built around a n
 ### [Arkst](https://github.com/luceat-lux-vestra/arkst)
 
 <a href="https://github.com/luceat-lux-vestra/arkst/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/luceat-lux-vestra/arkst/ci.yml?branch=main&style=flat-square&label=CI" alt="CI" /></a>
+<a href="https://github.com/luceat-lux-vestra/arkst/stargazers"><img src="https://img.shields.io/github/stars/luceat-lux-vestra/arkst?style=flat-square&label=Stars" alt="GitHub Stars" /></a>
 <img src="https://img.shields.io/badge/status-experimental-orange?style=flat-square" alt="Experimental" />
 
 An independent Quarkdown-compatible document compiler and toolchain with a backend-neutral IR and Typst/PDF output pipeline.
@@ -125,6 +131,7 @@ An independent Quarkdown-compatible document compiler and toolchain with a backe
 ### <a href="https://github.com/luceat-lux-vestra/erdMaid"><img src="https://raw.githubusercontent.com/luceat-lux-vestra/luceat-lux-vestra/main/assets/project-logos/erdmaid-themed.svg" width="20" height="20" align="top" alt="erdMaid logo" /></a> [erdMaid](https://github.com/luceat-lux-vestra/erdMaid)
 
 <a href="https://github.com/luceat-lux-vestra/erdMaid/actions/workflows/build.yml"><img src="https://img.shields.io/github/actions/workflow/status/luceat-lux-vestra/erdMaid/build.yml?branch=main&style=flat-square&label=Build" alt="Build" /></a>
+<a href="https://github.com/luceat-lux-vestra/erdMaid/stargazers"><img src="https://img.shields.io/github/stars/luceat-lux-vestra/erdMaid?style=flat-square&label=Stars" alt="GitHub Stars" /></a>
 <a href="https://plugins.jetbrains.com/plugin/index?xmlId=com.algorist.erdmaid"><img src="https://img.shields.io/jetbrains/plugin/v/com.algorist.erdmaid?style=flat-square&label=Marketplace" alt="Marketplace version" /></a>
 <a href="https://plugins.jetbrains.com/plugin/index?xmlId=com.algorist.erdmaid"><img src="https://img.shields.io/jetbrains/plugin/d/com.algorist.erdmaid?style=flat-square&label=downloads" alt="Downloads" /></a>
 
