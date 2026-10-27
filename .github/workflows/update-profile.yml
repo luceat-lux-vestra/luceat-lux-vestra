@@ -15,6 +15,7 @@ on:
       - "tests/test_publications_locale_selection.py"
       - "tests/test_update_selected_work.py"
       - "tests/test_update_profile_workflow.py"
+      - "tests/test_update_profile_refresh.py"
   push:
     branches: [main]
     paths:
@@ -24,6 +25,7 @@ on:
       - "scripts/render_github_overview.py"
       - "tests/test_update_selected_work.py"
       - "tests/test_update_profile_workflow.py"
+      - "tests/test_update_profile_refresh.py"
 
 permissions:
   contents: read
