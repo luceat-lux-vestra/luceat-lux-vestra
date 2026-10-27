@@ -29,7 +29,6 @@ USER_AGENT = "luceat-lux-vestra-profile-updater/2.0"
 SECTIONS = {
     "writing": ("<!-- LATEST-WRITING:START -->", "<!-- LATEST-WRITING:END -->"),
     "contrib": ("<!-- OSS-CONTRIBUTIONS:START -->", "<!-- OSS-CONTRIBUTIONS:END -->"),
-    "activity": ("<!-- RECENT-ACTIVITY:START -->", "<!-- RECENT-ACTIVITY:END -->"),
 }
 
 
@@ -185,129 +184,198 @@ def latest_writing() -> list[str]:
     return [f"- [{title}]({link}) — {dt.date().isoformat()}" for dt, title, link in posts[:3]]
 
 
+def _external_event_item(event: dict[str, Any]) -> dict[str, Any] | None:
+    """Normalize an external public collaboration event into an Issue/PR identity."""
+    repo = str((event.get("repo") or {}).get("name") or "")
+    if repo.count("/") != 1 or repo.lower().startswith(f"{USER.lower()}/"):
+        return None
+    actor = str((event.get("actor") or {}).get("login") or "")
+    if actor and actor.lower() != USER.lower():
+        return None
+
+    payload = event.get("payload") or {}
+    action = payload.get("action")
+    event_type = event.get("type")
+    kind = ""
+    subject: dict[str, Any] = {}
+    details: dict[str, Any] = {}
+    note = ""
+
+    if event_type == "IssueCommentEvent" and action in ("created", None):
+        subject = payload.get("issue") or {}
+        details = payload.get("comment") or {}
+        kind = "PR" if subject.get("pull_request") else "Issue"
+        note = "commented"
+    elif event_type == "PullRequestReviewEvent" and action == "submitted":
+        subject = payload.get("pull_request") or {}
+        details = payload.get("review") or {}
+        if str(details.get("state") or "").lower() not in (
+            "approved", "commented", "changes_requested"
+        ):
+            return None
+        kind = "PR"
+        note = "reviewed"
+    elif event_type == "PullRequestReviewCommentEvent" and action in ("created", None):
+        subject = payload.get("pull_request") or {}
+        details = payload.get("comment") or {}
+        kind = "PR"
+        note = "review comment"
+    elif event_type in ("IssuesEvent", "PullRequestEvent") and action == "opened":
+        subject = payload.get("issue" if event_type == "IssuesEvent" else "pull_request") or {}
+        author = str((subject.get("user") or {}).get("login") or "")
+        if author.lower() != USER.lower():
+            return None
+        kind = "Issue" if event_type == "IssuesEvent" else "PR"
+    else:
+        return None
+
+    if details:
+        detail_author = str((details.get("user") or {}).get("login") or "")
+        if detail_author and detail_author.lower() != USER.lower():
+            return None
+    elif note:
+        # An event without its comment/review payload is not verifiable collaboration.
+        return None
+
+    number = subject.get("number") or payload.get("number")
+    if not isinstance(number, int) or number <= 0:
+        return None
+    when = str(event.get("created_at") or "")
+    if not when:
+        return None
+    title = markdown_text(str(subject.get("title") or ""))
+    if not title:
+        return None
+    fallback = f"https://github.com/{repo}/{'pull' if kind == 'PR' else 'issues'}/{number}"
+    subject_url = str(subject.get("html_url") or fallback)
+    url = str(details.get("html_url") or subject_url)
+    return {
+        "key": (repo.lower(), number),
+        "repo": repo,
+        "number": number,
+        "kind": kind,
+        "title": title,
+        "url": url,
+        "updated_at": when,
+        "notes": {note} if note else set(),
+    }
+
+
+def _recent_external_events() -> list[dict[str, Any]]:
+    """Read up to GitHub's 300 most recent public events; never use these as history."""
+    events: list[dict[str, Any]] = []
+    for page in range(1, 4):
+        batch = github_json(f"/users/{USER}/events/public", {"per_page": 100, "page": page})
+        if not isinstance(batch, list):
+            raise RuntimeError("GitHub public events response is not a list")
+        events.extend(batch)
+        if len(batch) < 100:
+            break
+    return events
+
+
 def external_contributions() -> list[str]:
-    items: list[dict[str, Any]] = []
+    """Use authored Issues/PRs as the baseline and recent collaboration as enrichment."""
+    authored: dict[tuple[str, int], dict[str, Any]] = {}
     for kind in ("pr", "issue"):
         result = github_json(
             "/search/issues",
-            {"q": f"author:{USER} is:{kind} -user:{USER}", "sort": "updated", "order": "desc", "per_page": 20},
+            {
+                "q": f"author:{USER} is:{kind} -user:{USER}",
+                "sort": "updated",
+                "order": "desc",
+                "per_page": 20,
+            },
         )
+        if result.get("incomplete_results"):
+            raise RuntimeError(f"GitHub {kind} contribution search was incomplete")
         for item in result.get("items", []):
-            repo_url = item.get("repository_url", "")
-            if "/repos/" not in repo_url:
+            repository_url = str(item.get("repository_url") or "")
+            if "/repos/" not in repository_url:
                 continue
-            repo = repo_url.split("/repos/", 1)[1]
-            if repo.lower().startswith(f"{USER.lower()}/"):
+            repo_name = repository_url.split("/repos/", 1)[1]
+            number = item.get("number")
+            if (
+                repo_name.count("/") != 1
+                or repo_name.lower().startswith(f"{USER.lower()}/")
+                or not isinstance(number, int)
+                or number <= 0
+            ):
                 continue
-            items.append(
-                {
-                    "kind": "PR" if kind == "pr" else "Issue",
-                    "repo": repo,
-                    "number": item.get("number"),
-                    "title": markdown_text(item.get("title", "")),
-                    "url": item.get("html_url", ""),
-                    "updated_at": item.get("updated_at", ""),
-                }
-            )
-    items.sort(key=lambda item: item["updated_at"], reverse=True)
+            key = (repo_name.lower(), number)
+            authored[key] = {
+                "key": key,
+                "kind": "PR" if kind == "pr" else "Issue",
+                "repo": repo_name,
+                "number": number,
+                "title": markdown_text(str(item.get("title") or "")),
+                "url": str(item.get("html_url") or ""),
+                "updated_at": str(item.get("updated_at") or item.get("created_at") or ""),
+                "notes": set(),
+            }
 
-    chosen: list[dict[str, Any]] = []
-    seen_repos: set[str] = set()
-    for item in items:
-        repo = item["repo"].lower()
-        if repo in seen_repos:
+    # Events are optional, bounded and ephemeral. A failure must not erase the
+    # longer-lived Search API baseline, but must be visible in the workflow log.
+    try:
+        recent_events = _recent_external_events()
+    except Exception as exc:
+        print(f"warning: could not enrich contributions from recent activity: {exc}", file=sys.stderr)
+        recent_events = []
+
+    recent: dict[tuple[str, int], dict[str, Any]] = {}
+    for event in recent_events:
+        normalized = _external_event_item(event)
+        if normalized is None:
             continue
-        seen_repos.add(repo)
-        chosen.append(item)
-        if len(chosen) == 4:
-            break
+        key = normalized["key"]
+        prior = recent.get(key)
+        if prior is None:
+            recent[key] = normalized
+        else:
+            prior["notes"].update(normalized["notes"])
+            if normalized["updated_at"] > prior["updated_at"]:
+                prior.update(
+                    title=normalized["title"],
+                    url=normalized["url"],
+                    updated_at=normalized["updated_at"],
+                )
 
-    if not chosen:
+    for key, item in recent.items():
+        baseline = authored.get(key)
+        if baseline is not None:
+            baseline["notes"].update(item["notes"])
+            baseline["updated_at"] = max(baseline["updated_at"], item["updated_at"])
+
+    # Reserve up to four positions for durable authored contributions; show up
+    # to two additional distinct threads where the user commented or reviewed.
+    authored_items = sorted(
+        authored.values(),
+        key=lambda item: (item["updated_at"], item["repo"].lower(), item["number"]),
+        reverse=True,
+    )
+    selected = authored_items[:4]
+    event_only = sorted(
+        (item for key, item in recent.items() if key not in authored),
+        key=lambda item: (item["updated_at"], item["repo"].lower(), item["number"]),
+        reverse=True,
+    )
+    selected.extend(event_only[: max(0, 6 - len(selected))])
+    selected.sort(
+        key=lambda item: (item["updated_at"], item["repo"].lower(), item["number"]),
+        reverse=True,
+    )
+    if not selected:
         return ["_No recent public contributions to external repositories found._"]
-    return [
-        f"- **{item['kind']}** · [{item['repo']}#{item['number']}: {item['title']}]({item['url']}) — {iso_date(item['updated_at'])}"
-        for item in chosen
-    ]
 
-
-def recent_open_source_activity() -> list[str]:
-    events = github_json(f"/users/{USER}/events/public", {"per_page": 100})
-    lines: list[str] = []
-    push_included = False
-    own_repo_prefix = f"{USER.lower()}/"
-
-    for event in events:
-        event_type = event.get("type", "")
-        repo = (event.get("repo") or {}).get("name", "")
-        if not repo or repo.lower().startswith(own_repo_prefix):
-            continue
-
-        payload = event.get("payload") or {}
-        date = iso_date(event.get("created_at"))
-        repo_url = f"https://github.com/{repo}"
-        line = ""
-
-        if event_type == "PullRequestEvent":
-            pr = payload.get("pull_request") or {}
-            action = payload.get("action", "updated")
-            number = pr.get("number") or payload.get("number")
-            title = markdown_text(pr.get("title", "pull request"))
-            url = pr.get("html_url") or f"{repo_url}/pull/{number}"
-            line = f"- **PR {action}** · [{repo}#{number}: {title}]({url}) — {date}"
-        elif event_type == "IssuesEvent":
-            issue = payload.get("issue") or {}
-            action = payload.get("action", "updated")
-            number = issue.get("number")
-            title = markdown_text(issue.get("title", "issue"))
-            url = issue.get("html_url") or f"{repo_url}/issues/{number}"
-            line = f"- **Issue {action}** · [{repo}#{number}: {title}]({url}) — {date}"
-        elif event_type == "IssueCommentEvent":
-            issue = payload.get("issue") or {}
-            number = issue.get("number")
-            title = markdown_text(issue.get("title", "discussion"))
-            url = (payload.get("comment") or {}).get("html_url") or issue.get("html_url") or f"{repo_url}/issues/{number}"
-            label = "PR comment" if "pull_request" in issue else "Issue comment"
-            line = f"- **{label}** · [{repo}#{number}: {title}]({url}) — {date}"
-        elif event_type == "PullRequestReviewEvent":
-            pr = payload.get("pull_request") or {}
-            number = pr.get("number")
-            title = markdown_text(pr.get("title", "pull request"))
-            url = pr.get("html_url") or f"{repo_url}/pull/{number}"
-            line = f"- **Reviewed PR** · [{repo}#{number}: {title}]({url}) — {date}"
-        elif event_type == "PullRequestReviewCommentEvent":
-            pr = payload.get("pull_request") or {}
-            number = pr.get("number")
-            title = markdown_text(pr.get("title", "pull request"))
-            url = (payload.get("comment") or {}).get("html_url") or pr.get("html_url") or f"{repo_url}/pull/{number}"
-            line = f"- **PR review comment** · [{repo}#{number}: {title}]({url}) — {date}"
-        elif event_type == "ReleaseEvent":
-            release = payload.get("release") or {}
-            tag = markdown_text(release.get("tag_name", "release"))
-            url = release.get("html_url") or f"{repo_url}/releases"
-            line = f"- **Release** · [{repo} {tag}]({url}) — {date}"
-        elif event_type == "CreateEvent":
-            ref_type = payload.get("ref_type", "repository")
-            ref = payload.get("ref")
-            label = f"{ref_type} `{markdown_text(str(ref))}`" if ref else ref_type
-            line = f"- **Created {label}** · [{repo}]({repo_url}) — {date}"
-        elif event_type == "ForkEvent":
-            forkee = payload.get("forkee") or {}
-            full_name = forkee.get("full_name", repo)
-            url = forkee.get("html_url", repo_url)
-            line = f"- **Forked** · [{full_name}]({url}) — {date}"
-        elif event_type == "PushEvent" and not push_included:
-            size = payload.get("size")
-            if size is None:
-                size = len(payload.get("commits") or [])
-            line = f"- **Pushed {size} commit{'s' if size != 1 else ''}** · [{repo}]({repo_url}) — {date}"
-            push_included = True
-
-        if line:
-            lines.append(line)
-        if len(lines) == 5:
-            break
-
-    return lines or ["_No recent public activity in external repositories found._"]
+    lines = []
+    for item in selected:
+        note = f" · {', '.join(sorted(item['notes']))}" if item["notes"] else ""
+        lines.append(
+            f"- **{item['kind']}** · "
+            f"[{item['repo']}#{item['number']}: {item['title']}]({item['url']})"
+            f"{note} — {iso_date(item['updated_at'])}"
+        )
+    return lines
 
 
 def owned_public_repo_stats() -> tuple[int, int]:
@@ -503,38 +571,40 @@ def generate_github_assets() -> None:
 def main() -> int:
     readme = README_PATH.read_text(encoding="utf-8")
     updated = readme
-    successes = 0
+    failures: list[str] = []
     for section, loader in (
         ("writing", latest_writing),
         ("contrib", external_contributions),
-        ("activity", recent_open_source_activity),
     ):
         try:
             lines = loader()
             updated = update_section(updated, section, lines)
-            successes += 1
             print(f"updated {section}: {len(lines)} item(s)")
         except Exception as exc:
-            # Preserve last known-good content when one upstream source is temporarily unavailable.
-            print(f"warning: could not update {section}: {exc}", file=sys.stderr)
+            failures.append(section)
+            print(f"error: could not update {section}: {exc}", file=sys.stderr)
+
+    if failures:
+        # Keep the previously published README and do not commit a partial refresh.
+        print(
+            f"error: profile refresh incomplete ({', '.join(failures)}); README left unchanged",
+            file=sys.stderr,
+        )
+        return 1
 
     try:
         generate_github_assets()
-        successes += 1
     except Exception as exc:
-        # Preserve the last generated SVGs when GitHub is temporarily unavailable.
-        print(f"warning: could not refresh GitHub metric assets: {exc}", file=sys.stderr)
+        # The workflow must not publish partially refreshed assets or README content.
+        print(f"error: could not refresh GitHub metric assets: {exc}", file=sys.stderr)
+        return 1
 
-    if successes == 0:
-        print("warning: no dynamic source could be refreshed; profile left unchanged", file=sys.stderr)
-        return 0
     if updated != readme:
         README_PATH.write_text(updated, encoding="utf-8")
         print("README updated")
     else:
         print("README already current")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
