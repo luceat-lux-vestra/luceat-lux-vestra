@@ -160,7 +160,7 @@ A JetBrains IDE plugin that exports real database table metadata and relationshi
 - **Issue** · [zed-industries/zed#61349: LSP sortText is effectively ignored when ranking completions](https://github.com/zed-industries/zed/issues/61349) — 2026-10-26
 - **Issue** · [JetBrains/jcef#47: \[remote\] RemoteClient.dispose() skips process-global MessageRouter config cleanup](https://github.com/JetBrains/jcef/issues/47) — 2026-10-22
 - **PR** · [zed-industries/extensions#6875: Add Spring Tools extension](https://github.com/zed-industries/extensions/pull/6875) — 2026-10-15
-- **Issue** · [usebruno/bruno#9063: Windows System Proxy with a fixed proxy adds 20–30s delay per request, while manual proxy is fast](https://github.com/usebruno/bruno/issues/9063) — 2026-08-29
+- **Issue** · [zed-industries/zed#61865: Document highlights query only the first capable language server, so a secondary server's highlights never appear](https://github.com/zed-industries/zed/issues/61865) — 2026-09-11
 <!-- OSS-CONTRIBUTIONS:END -->
 
 ---
