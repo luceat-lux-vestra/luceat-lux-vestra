@@ -184,49 +184,198 @@ def latest_writing() -> list[str]:
     return [f"- [{title}]({link}) — {dt.date().isoformat()}" for dt, title, link in posts[:3]]
 
 
+def _external_event_item(event: dict[str, Any]) -> dict[str, Any] | None:
+    """Normalize an external public collaboration event into an Issue/PR identity."""
+    repo = str((event.get("repo") or {}).get("name") or "")
+    if repo.count("/") != 1 or repo.lower().startswith(f"{USER.lower()}/"):
+        return None
+    actor = str((event.get("actor") or {}).get("login") or "")
+    if actor and actor.lower() != USER.lower():
+        return None
+
+    payload = event.get("payload") or {}
+    action = payload.get("action")
+    event_type = event.get("type")
+    kind = ""
+    subject: dict[str, Any] = {}
+    details: dict[str, Any] = {}
+    note = ""
+
+    if event_type == "IssueCommentEvent" and action in ("created", None):
+        subject = payload.get("issue") or {}
+        details = payload.get("comment") or {}
+        kind = "PR" if subject.get("pull_request") else "Issue"
+        note = "commented"
+    elif event_type == "PullRequestReviewEvent" and action == "submitted":
+        subject = payload.get("pull_request") or {}
+        details = payload.get("review") or {}
+        if str(details.get("state") or "").lower() not in (
+            "approved", "commented", "changes_requested"
+        ):
+            return None
+        kind = "PR"
+        note = "reviewed"
+    elif event_type == "PullRequestReviewCommentEvent" and action in ("created", None):
+        subject = payload.get("pull_request") or {}
+        details = payload.get("comment") or {}
+        kind = "PR"
+        note = "review comment"
+    elif event_type in ("IssuesEvent", "PullRequestEvent") and action == "opened":
+        subject = payload.get("issue" if event_type == "IssuesEvent" else "pull_request") or {}
+        author = str((subject.get("user") or {}).get("login") or "")
+        if author.lower() != USER.lower():
+            return None
+        kind = "Issue" if event_type == "IssuesEvent" else "PR"
+    else:
+        return None
+
+    if details:
+        detail_author = str((details.get("user") or {}).get("login") or "")
+        if detail_author and detail_author.lower() != USER.lower():
+            return None
+    elif note:
+        # An event without its comment/review payload is not verifiable collaboration.
+        return None
+
+    number = subject.get("number") or payload.get("number")
+    if not isinstance(number, int) or number <= 0:
+        return None
+    when = str(event.get("created_at") or "")
+    if not when:
+        return None
+    title = markdown_text(str(subject.get("title") or ""))
+    if not title:
+        return None
+    fallback = f"https://github.com/{repo}/{'pull' if kind == 'PR' else 'issues'}/{number}"
+    subject_url = str(subject.get("html_url") or fallback)
+    url = str(details.get("html_url") or subject_url)
+    return {
+        "key": (repo.lower(), number),
+        "repo": repo,
+        "number": number,
+        "kind": kind,
+        "title": title,
+        "url": url,
+        "updated_at": when,
+        "notes": {note} if note else set(),
+    }
+
+
+def _recent_external_events() -> list[dict[str, Any]]:
+    """Read up to GitHub's 300 most recent public events; never use these as history."""
+    events: list[dict[str, Any]] = []
+    for page in range(1, 4):
+        batch = github_json(f"/users/{USER}/events/public", {"per_page": 100, "page": page})
+        if not isinstance(batch, list):
+            raise RuntimeError("GitHub public events response is not a list")
+        events.extend(batch)
+        if len(batch) < 100:
+            break
+    return events
+
+
 def external_contributions() -> list[str]:
-    items: list[dict[str, Any]] = []
+    """Use authored Issues/PRs as the baseline and recent collaboration as enrichment."""
+    authored: dict[tuple[str, int], dict[str, Any]] = {}
     for kind in ("pr", "issue"):
         result = github_json(
             "/search/issues",
-            {"q": f"author:{USER} is:{kind} -user:{USER}", "sort": "updated", "order": "desc", "per_page": 20},
+            {
+                "q": f"author:{USER} is:{kind} -user:{USER}",
+                "sort": "updated",
+                "order": "desc",
+                "per_page": 20,
+            },
         )
+        if result.get("incomplete_results"):
+            raise RuntimeError(f"GitHub {kind} contribution search was incomplete")
         for item in result.get("items", []):
-            repo_url = item.get("repository_url", "")
-            if "/repos/" not in repo_url:
+            repository_url = str(item.get("repository_url") or "")
+            if "/repos/" not in repository_url:
                 continue
-            repo = repo_url.split("/repos/", 1)[1]
-            if repo.lower().startswith(f"{USER.lower()}/"):
+            repo_name = repository_url.split("/repos/", 1)[1]
+            number = item.get("number")
+            if (
+                repo_name.count("/") != 1
+                or repo_name.lower().startswith(f"{USER.lower()}/")
+                or not isinstance(number, int)
+                or number <= 0
+            ):
                 continue
-            items.append(
-                {
-                    "kind": "PR" if kind == "pr" else "Issue",
-                    "repo": repo,
-                    "number": item.get("number"),
-                    "title": markdown_text(item.get("title", "")),
-                    "url": item.get("html_url", ""),
-                    "updated_at": item.get("updated_at", ""),
-                }
-            )
-    items.sort(key=lambda item: item["updated_at"], reverse=True)
+            key = (repo_name.lower(), number)
+            authored[key] = {
+                "key": key,
+                "kind": "PR" if kind == "pr" else "Issue",
+                "repo": repo_name,
+                "number": number,
+                "title": markdown_text(str(item.get("title") or "")),
+                "url": str(item.get("html_url") or ""),
+                "updated_at": str(item.get("updated_at") or item.get("created_at") or ""),
+                "notes": set(),
+            }
 
-    chosen: list[dict[str, Any]] = []
-    seen_repos: set[str] = set()
-    for item in items:
-        repo = item["repo"].lower()
-        if repo in seen_repos:
+    # Events are optional, bounded and ephemeral. A failure must not erase the
+    # longer-lived Search API baseline, but must be visible in the workflow log.
+    try:
+        recent_events = _recent_external_events()
+    except Exception as exc:
+        print(f"warning: could not enrich contributions from recent activity: {exc}", file=sys.stderr)
+        recent_events = []
+
+    recent: dict[tuple[str, int], dict[str, Any]] = {}
+    for event in recent_events:
+        normalized = _external_event_item(event)
+        if normalized is None:
             continue
-        seen_repos.add(repo)
-        chosen.append(item)
-        if len(chosen) == 4:
-            break
+        key = normalized["key"]
+        prior = recent.get(key)
+        if prior is None:
+            recent[key] = normalized
+        else:
+            prior["notes"].update(normalized["notes"])
+            if normalized["updated_at"] > prior["updated_at"]:
+                prior.update(
+                    title=normalized["title"],
+                    url=normalized["url"],
+                    updated_at=normalized["updated_at"],
+                )
 
-    if not chosen:
+    for key, item in recent.items():
+        baseline = authored.get(key)
+        if baseline is not None:
+            baseline["notes"].update(item["notes"])
+            baseline["updated_at"] = max(baseline["updated_at"], item["updated_at"])
+
+    # Reserve up to four positions for durable authored contributions; show up
+    # to two additional distinct threads where the user commented or reviewed.
+    authored_items = sorted(
+        authored.values(),
+        key=lambda item: (item["updated_at"], item["repo"].lower(), item["number"]),
+        reverse=True,
+    )
+    selected = authored_items[:4]
+    event_only = sorted(
+        (item for key, item in recent.items() if key not in authored),
+        key=lambda item: (item["updated_at"], item["repo"].lower(), item["number"]),
+        reverse=True,
+    )
+    selected.extend(event_only[: max(0, 6 - len(selected))])
+    selected.sort(
+        key=lambda item: (item["updated_at"], item["repo"].lower(), item["number"]),
+        reverse=True,
+    )
+    if not selected:
         return ["_No recent public contributions to external repositories found._"]
-    return [
-        f"- **{item['kind']}** · [{item['repo']}#{item['number']}: {item['title']}]({item['url']}) — {iso_date(item['updated_at'])}"
-        for item in chosen
-    ]
+
+    lines = []
+    for item in selected:
+        note = f" · {', '.join(sorted(item['notes']))}" if item["notes"] else ""
+        lines.append(
+            f"- **{item['kind']}** · "
+            f"[{item['repo']}#{item['number']}: {item['title']}]({item['url']})"
+            f"{note} — {iso_date(item['updated_at'])}"
+        )
+    return lines
 
 
 def owned_public_repo_stats() -> tuple[int, int]:

@@ -16,6 +16,7 @@ on:
       - "tests/test_update_selected_work.py"
       - "tests/test_update_profile_workflow.py"
       - "tests/test_update_profile_refresh.py"
+      - "tests/test_open_source_contributions.py"
   push:
     branches: [main]
     paths:
@@ -26,6 +27,7 @@ on:
       - "tests/test_update_selected_work.py"
       - "tests/test_update_profile_workflow.py"
       - "tests/test_update_profile_refresh.py"
+      - "tests/test_open_source_contributions.py"
 
 permissions:
   contents: read
