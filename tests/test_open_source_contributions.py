@@ -80,7 +80,9 @@ class CollaborationSearchTest(unittest.TestCase):
             lines = subject.external_contributions()
         self.assertEqual(len(lines), 1)
         self.assertIn("zed-industries/extensions#6875", lines[0])
-        self.assertIn("· commented, reviewed — 2026-10-15", lines[0])
+        self.assertIn("**PR · Commented · Reviewed**", lines[0])
+        self.assertIn("— 2026-10-15", lines[0])
+        self.assertNotIn(" · commented, reviewed —", lines[0])
         self.assertNotIn("2026-10-27", lines[0])
         self.assertTrue(any("reviewed-by:" in args["q"] for p, args in calls if p == "/search/issues"))
 
@@ -96,7 +98,8 @@ class CollaborationSearchTest(unittest.TestCase):
             lines = subject.external_contributions()
         self.assertEqual(len(lines), 1)
         self.assertIn("external/project#51", lines[0])
-        self.assertIn("commented — 2026-10-02", lines[0])
+        self.assertIn("**Commented on Issue**", lines[0])
+        self.assertIn("— 2026-10-02", lines[0])
 
     def test_review_activity_only_pr_is_included(self):
         item = issue("external/project", 77, pr=True, updated="2026-10-28T00:00:00Z")
@@ -116,8 +119,55 @@ class CollaborationSearchTest(unittest.TestCase):
         with patch.object(subject, "github_json", side_effect=api):
             lines = subject.external_contributions()
         self.assertEqual(len(lines), 1)
-        self.assertIn("**PR**", lines[0])
-        self.assertIn("review comment, reviewed — 2026-10-11", lines[0])
+        self.assertIn("**Reviewed PR · Review Comment**", lines[0])
+        self.assertIn("— 2026-10-11", lines[0])
+
+    def test_plain_authored_items_have_simple_leading_type(self):
+        for kind, expected in (("Issue", "Issue"), ("PR", "PR")):
+            with self.subTest(kind=kind):
+                self.assertEqual(
+                    subject._contribution_activity_label(
+                        {"kind": kind, "notes": set()}, authored=True
+                    ),
+                    expected,
+                )
+
+    def test_authored_issue_with_comment_has_visible_leading_activity(self):
+        label = subject._contribution_activity_label(
+            {"kind": "Issue", "notes": {"commented"}}, authored=True
+        )
+        self.assertEqual(label, "Issue · Commented")
+
+    def test_collaboration_only_pr_comment_and_review_labels(self):
+        cases = [
+            ({"commented"}, "Commented on PR"),
+            ({"reviewed"}, "Reviewed PR"),
+            ({"review comment"}, "Review Comment on PR"),
+            ({"commented", "reviewed"}, "Commented on PR · Reviewed"),
+            ({"reviewed", "review comment"}, "Reviewed PR · Review Comment"),
+        ]
+        for notes, expected in cases:
+            with self.subTest(notes=notes):
+                self.assertEqual(
+                    subject._contribution_activity_label(
+                        {"kind": "PR", "notes": notes}, authored=False
+                    ),
+                    expected,
+                )
+
+    def test_authored_issue_activity_is_not_relabelled_as_collaboration_only(self):
+        item = issue("JetBrains/jcef", 47)
+        api, _ = mock_api(
+            authored_issues=[item], commented_issues=[item],
+            details={("JetBrains/jcef", 47, "issues", "comments"): [
+                comment("2026-10-22T00:00:00Z")
+            ]},
+        )
+        with patch.object(subject, "github_json", side_effect=api):
+            lines = subject.external_contributions()
+        self.assertEqual(len(lines), 1)
+        self.assertTrue(lines[0].startswith("- **Issue · Commented** · "))
+        self.assertIn("](https://github.com/JetBrains/jcef/issues/47)", lines[0])
 
     def test_thread_last_updated_by_other_user_is_not_falsely_credited(self):
         item = issue("external/maintained", 8, updated="2026-10-27T00:00:00Z")
