@@ -298,6 +298,35 @@ def _external_collaboration() -> dict[tuple[str, int], dict[str, Any]]:
     return merged
 
 
+def _contribution_activity_label(item: dict[str, Any], *, authored: bool) -> str:
+    """Place the activity classification before the (potentially long) title."""
+    kind = item["kind"]
+    notes = item["notes"]
+    if authored:
+        labels = [kind]
+        labels.extend(
+            label for note, label in (
+                ("commented", "Commented"),
+                ("reviewed", "Reviewed"),
+                ("review comment", "Review Comment"),
+            )
+            if note in notes
+        )
+        return " · ".join(labels)
+
+    if kind == "Issue":
+        return "Commented on Issue" if "commented" in notes else "Issue"
+
+    labels = []
+    if "commented" in notes:
+        labels.append("Commented on PR")
+    if "reviewed" in notes:
+        labels.append("Reviewed" if labels else "Reviewed PR")
+    if "review comment" in notes:
+        labels.append("Review Comment" if labels else "Review Comment on PR")
+    return " · ".join(labels) or "PR"
+
+
 def external_contributions() -> list[str]:
     """Use authored Issues/PRs as baseline and verified collaboration as enrichment."""
     authored: dict[tuple[str, int], dict[str, Any]] = {}
@@ -352,11 +381,11 @@ def external_contributions() -> list[str]:
 
     lines = []
     for item in selected:
-        note = f" · {', '.join(sorted(item['notes']))}" if item["notes"] else ""
+        label = _contribution_activity_label(item, authored=item["key"] in authored)
         lines.append(
-            f"- **{item['kind']}** · "
+            f"- **{label}** · "
             f"[{item['repo']}#{item['number']}: {item['title']}]({item['url']})"
-            f"{note} — {iso_date(item['updated_at'])}"
+            f" — {iso_date(item['updated_at'])}"
         )
     return lines
 
