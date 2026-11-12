@@ -157,11 +157,11 @@ A JetBrains IDE plugin that exports real database table metadata and relationshi
 ## Open Source Contributions
 
 <!-- OSS-CONTRIBUTIONS:START -->
+- **Issue** · [usebruno/bruno-vscode#125: Proxy settings do not work at all — custom proxy (bruno.json) and system proxy env vars (HTTP_PROXY/HTTPS_PROXY/NO_PROXY) are ignored](https://github.com/usebruno/bruno-vscode/issues/125) — 2026-11-12
 - **Issue** · [zed-industries/zed#61349: LSP sortText is effectively ignored when ranking completions](https://github.com/zed-industries/zed/issues/61349) — 2026-10-26
 - **Issue** · [JetBrains/jcef#47: \[remote\] RemoteClient.dispose() skips process-global MessageRouter config cleanup](https://github.com/JetBrains/jcef/issues/47) — 2026-10-22
 - **PR · Commented · Reviewed** · [zed-industries/extensions#6875: Add Spring Tools extension](https://github.com/zed-industries/extensions/pull/6875) — 2026-10-15
 - **Commented on Issue** · [usebruno/bruno#8576: System Proxy (PAC) mode is ~2s slower per request due to myIpAddress() calling out to 8.8.8.8:53](https://github.com/usebruno/bruno/issues/8576) — 2026-09-15
-- **Issue** · [zed-industries/zed#61865: Document highlights query only the first capable language server, so a secondary server's highlights never appear](https://github.com/zed-industries/zed/issues/61865) — 2026-09-11
 - **Commented on Issue** · [spring-projects/spring-tools#1889: \[Question\] Any plans to support Zed editor?](https://github.com/spring-projects/spring-tools/issues/1889) — 2026-09-02
 <!-- OSS-CONTRIBUTIONS:END -->
 
