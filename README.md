@@ -147,9 +147,9 @@ A JetBrains IDE plugin that exports real database table metadata and relationshi
 ## Publications
 
 <!-- LATEST-WRITING:START -->
+- [GitHub Actions CI Optimization — Measure What You Actually Reduce](https://blog.ox0.uk/github-actions-ci-optimization-measure-what-matters-en/) — 2026-11-14
 - [Testing a Technology Radar Vol.35 Question with Mutation Testing](https://blog.ox0.uk/technology-radar-vol35-measured-mutation-testing-en/) — 2026-11-07
 - [Is RequestScopeBean an Alternative, or Just Another Global State?](https://blog.ox0.uk/request-scope-bean-context-boundary-en/) — 2026-09-19
-- [Spring Boot development works in Zed now](https://blog.ox0.uk/zed-spring-tools/) — 2026-07-26
 <!-- LATEST-WRITING:END -->
 
 ---
