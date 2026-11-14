@@ -75,6 +75,34 @@ class PublicationsLocaleSelectionTest(unittest.TestCase):
         self.assertNotIn("managed-post/", "\n".join(lines))
         self.assertNotIn("레거시", "\n".join(lines))
 
+    def test_latest_writing_limits_display_to_five_newest_entries(self):
+        rss_items = []
+        locale_by_slug = {}
+        for day in range(1, 7):
+            slug = f"post-{day}"
+            locale_by_slug[slug] = "en"
+            rss_items.append(
+                f"""  <item>
+    <title>Post {day}</title>
+    <link>https://blog.ox0.uk/{slug}/</link>
+    <pubDate>{day:02d} Nov 2026 00:00:00 +0000</pubDate>
+  </item>"""
+            )
+        rss = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss><channel>\n"
+               + "\n".join(rss_items)
+               + "\n</channel></rss>").encode("utf-8")
+
+        with (
+            patch.object(update_profile, "article_locale_slugs", return_value=locale_by_slug),
+            patch.object(update_profile, "request_bytes", return_value=rss),
+        ):
+            lines = update_profile.latest_writing()
+
+        self.assertEqual(len(lines), 5)
+        self.assertIn("[Post 6]", lines[0])
+        self.assertIn("[Post 2]", lines[-1])
+        self.assertNotIn("[Post 1]", "\n".join(lines))
+
 
 if __name__ == "__main__":
     unittest.main()
