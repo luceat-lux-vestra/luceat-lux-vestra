@@ -25,6 +25,7 @@ BLOG_SOURCE_REF = os.environ.get("BLOG_SOURCE_REF", "main")
 GITHUB_API = "https://api.github.com"
 GITHUB_GRAPHQL = "https://api.github.com/graphql"
 USER_AGENT = "luceat-lux-vestra-profile-updater/2.0"
+LATEST_WRITING_LIMIT = 5
 
 SECTIONS = {
     "writing": ("<!-- LATEST-WRITING:START -->", "<!-- LATEST-WRITING:END -->"),
@@ -181,7 +182,7 @@ def latest_writing() -> list[str]:
     posts.sort(key=lambda post: post[0], reverse=True)
     if not posts:
         raise RuntimeError("RSS feed returned no English-titled posts")
-    return [f"- [{title}]({link}) — {dt.date().isoformat()}" for dt, title, link in posts[:3]]
+    return [f"- [{title}]({link}) — {dt.date().isoformat()}" for dt, title, link in posts[:LATEST_WRITING_LIMIT]]
 
 
 COLLABORATION_SEARCH_LIMIT = 8
