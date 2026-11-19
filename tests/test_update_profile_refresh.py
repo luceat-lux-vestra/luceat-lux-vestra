@@ -10,6 +10,14 @@ from scripts import update_profile
 
 README = """# Profile
 
+## Writing & Knowledge
+
+### Engineering Knowledge
+
+[Browse Engineering Knowledge](https://github.com/luceat-lux-vestra/engineering-knowledge)
+
+### Recent Publications
+
 <!-- LATEST-WRITING:START -->
 - old writing
 <!-- LATEST-WRITING:END -->
@@ -41,6 +49,9 @@ class ProfileRefreshTest(unittest.TestCase):
         self.assertIn("- new writing", actual)
         self.assertIn("- new contribution", actual)
         self.assertNotIn("old writing", actual)
+        # The feed updater must never overwrite the permanent EK entry.
+        self.assertIn("[Browse Engineering Knowledge](https://github.com/luceat-lux-vestra/engineering-knowledge)", actual)
+        self.assertLess(actual.index("### Engineering Knowledge"), actual.index("- new writing"))
 
     def test_upstream_failure_is_not_green_and_preserves_readme(self):
         stderr = io.StringIO()
