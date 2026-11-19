@@ -26,9 +26,12 @@ GITHUB_API = "https://api.github.com"
 GITHUB_GRAPHQL = "https://api.github.com/graphql"
 USER_AGENT = "luceat-lux-vestra-profile-updater/2.0"
 LATEST_WRITING_LIMIT = 5
+NOTABLE_UPSTREAM_LIMIT = 3
+NOTABLE_EVIDENCE_THRESHOLD = 7
 
 SECTIONS = {
     "writing": ("<!-- LATEST-WRITING:START -->", "<!-- LATEST-WRITING:END -->"),
+    "notable": ("<!-- OSS-NOTABLE:START -->", "<!-- OSS-NOTABLE:END -->"),
     "contrib": ("<!-- OSS-CONTRIBUTIONS:START -->", "<!-- OSS-CONTRIBUTIONS:END -->"),
 }
 
@@ -328,8 +331,106 @@ def _contribution_activity_label(item: dict[str, Any], *, authored: bool) -> str
     return " · ".join(labels) or "PR"
 
 
-def external_contributions() -> list[str]:
+
+def _upstream_evidence_score(raw: dict[str, Any]) -> int:
+    """Heuristic for evidence-rich reports, not a judgment of project impact."""
+    body = str(raw.get("body") or "")
+    if len(body) < 220:
+        return 0
+    score = 0
+    signals = (
+        (r"\b(?:steps? to reproduce|reproduction|reproducer)\b", 2),
+        (r"\bexpected (?:behavior|result)\b", 1),
+        (r"\bactual (?:behavior|result)\b", 1),
+        (r"\b(?:environment|versions?|platform)\b", 1),
+        (r"\b(?:root cause|source paths?|\.java|\.cpp|\.rs|stack trace)\b", 1),
+        (r"\b(?:benchmark|measurement|measured|rss|pss|experiment|comparison)\b", 1),
+        (r"\b(?:regression|lifecycle|memory leak|cleanup|performance)\b", 1),
+    )
+    for pattern, points in signals:
+        if re.search(pattern, body, re.IGNORECASE):
+            score += points
+    if chr(96) * 3 in body:
+        score += 1
+    if re.search(r"\b\d+(?:\.\d+)?\s*(?:MiB|GiB|MB|GB|ms|%)\b", body, re.IGNORECASE):
+        score += 2
+    if len(body) >= 1200:
+        score += 1
+    reactions = raw.get("reactions") or {}
+    if isinstance(reactions, dict) and int(reactions.get("total_count") or 0) > 0:
+        score += 1
+    if int(raw.get("comments") or 0) >= 2:
+        score += 1
+    return score
+
+
+def notable_external_contributions() -> tuple[list[str], set[tuple[str, int]]]:
+    """Automatically select evidence-rich upstream work, without manual allowlists."""
+    candidates: dict[tuple[str, int], tuple[int, dict[str, Any], str]] = {}
+    for kind in ("issue", "pr"):
+        # Search multiple pages so older valuable reports do not disappear as
+        # newer issues are filed. The GitHub Search API caps results at 1,000.
+        for page in range(1, 11):
+            result = github_json(
+                "/search/issues",
+                {
+                    "q": f"author:{USER} is:{kind} -user:{USER}",
+                    "sort": "created",
+                    "order": "desc",
+                    "per_page": 100,
+                    "page": page,
+                },
+            )
+            if not isinstance(result, dict) or result.get("incomplete_results"):
+                raise RuntimeError(f"GitHub {kind} notable contribution search was incomplete")
+            batch = result.get("items")
+            if not isinstance(batch, list):
+                raise RuntimeError(f"GitHub {kind} notable contribution items missing")
+            for raw in batch:
+                item = _external_thread(raw)
+                if item is None or not item["title"] or not item["url"]:
+                    continue
+                score = _upstream_evidence_score(raw)
+                if score < NOTABLE_EVIDENCE_THRESHOLD:
+                    continue
+                item["kind"] = "PR" if kind == "pr" else "Issue"
+                created = str(raw.get("created_at") or item["updated_at"])
+                candidates[item["key"]] = (score, item, created)
+            if len(batch) < 100:
+                break
+        else:
+            # Avoid representing a truncated search as complete ranking.
+            if int(result.get("total_count") or 0) > 1000:
+                raise RuntimeError("GitHub notable contribution search exceeds 1,000 results")
+
+    ranked = sorted(
+        candidates.values(),
+        key=lambda entry: (
+            entry[0],
+            entry[2],
+            entry[1]["repo"].lower(),
+            entry[1]["number"],
+        ),
+        reverse=True,
+    )
+    selected = ranked[:NOTABLE_UPSTREAM_LIMIT]
+    lines = [
+        f"- **{item['kind']}** · "
+        f"[{item['repo']}#{item['number']}: {item['title']}]({item['url']})"
+        f" — {iso_date(created)}"
+        for _, item, created in selected
+    ]
+    return (
+        lines or ["_No evidence-rich external contributions identified yet._"],
+        {item["key"] for _, item, _ in selected},
+    )
+
+
+def external_contributions(
+    *, excluded_keys: set[tuple[str, int]] | None = None
+) -> list[str]:
     """Use authored Issues/PRs as baseline and verified collaboration as enrichment."""
+    excluded_keys = excluded_keys or set()
     authored: dict[tuple[str, int], dict[str, Any]] = {}
     for kind in ("pr", "issue"):
         result = github_json(
@@ -362,13 +463,13 @@ def external_contributions() -> list[str]:
     # Preserve four authored slots, then up to two distinct collaboration-only
     # threads. Sort the combined display by verified recent activity.
     authored_items = sorted(
-        authored.values(),
+        (item for key, item in authored.items() if key not in excluded_keys),
         key=lambda item: (item["updated_at"], item["repo"].lower(), item["number"]),
         reverse=True,
     )
     selected = authored_items[:4]
     additional = sorted(
-        (item for key, item in recent.items() if key not in authored),
+        (item for key, item in recent.items() if key not in authored and key not in excluded_keys),
         key=lambda item: (item["updated_at"], item["repo"].lower(), item["number"]),
         reverse=True,
     )
@@ -585,12 +686,19 @@ def main() -> int:
     readme = README_PATH.read_text(encoding="utf-8")
     updated = readme
     failures: list[str] = []
+    notable_keys: set[tuple[str, int]] = set()
     for section, loader in (
         ("writing", latest_writing),
+        ("notable", notable_external_contributions),
         ("contrib", external_contributions),
     ):
         try:
-            lines = loader()
+            if section == "notable":
+                lines, notable_keys = loader()
+            elif section == "contrib":
+                lines = loader(excluded_keys=notable_keys)
+            else:
+                lines = loader()
             updated = update_section(updated, section, lines)
             print(f"updated {section}: {len(lines)} item(s)")
         except Exception as exc:

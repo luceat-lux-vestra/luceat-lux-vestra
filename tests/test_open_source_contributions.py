@@ -169,6 +169,49 @@ class CollaborationSearchTest(unittest.TestCase):
         self.assertTrue(lines[0].startswith("- **Issue · Commented** · "))
         self.assertIn("](https://github.com/JetBrains/jcef/issues/47)", lines[0])
 
+    def test_notable_external_contributions_are_automatically_ranked(self):
+        report = issue("JetBrains/jcef", 47, updated="2026-10-22T22:28:04Z")
+        report["created_at"] = "2026-10-22T22:28:04Z"
+        report["body"] = (
+            "Describe the bug: RemoteClient.dispose cleanup differs. "
+            "Steps to Reproduce: repeatedly dispose remote clients. "
+            "Expected behavior: remove router configs. Actual behavior: stale configs. "
+            "Environment: JetBrains Runtime. Source path RemoteClient.cpp. "
+            "Measured RSS and PSS: 169 MiB per lifecycle vs 131 MiB, "
+            "performance regression. " + "More experimental measurements. " * 35
+        )
+        short = issue("other/simple", 9, updated="2026-11-18T00:00:00Z")
+        short["body"] = "Please fix this."
+        api, _ = mock_api(authored_issues=[short, report])
+        with patch.object(subject, "github_json", side_effect=api):
+            lines, excluded = subject.notable_external_contributions()
+        self.assertEqual(len(lines), 1)
+        self.assertIn("JetBrains/jcef#47", lines[0])
+        self.assertEqual(excluded, {("jetbrains/jcef", 47)})
+
+    def test_notable_reports_are_removed_from_recent_slots(self):
+        pinned = issue("JetBrains/jcef", 47, updated="2026-11-19T00:00:00Z")
+        recent = issue("some/upstream", 8, updated="2026-11-18T00:00:00Z")
+        api, _ = mock_api(authored_issues=[pinned, recent])
+        with patch.object(subject, "github_json", side_effect=api):
+            lines = subject.external_contributions(excluded_keys={("jetbrains/jcef", 47)})
+        self.assertEqual(len(lines), 1)
+        self.assertIn("some/upstream#8", lines[0])
+        self.assertNotIn("JetBrains/jcef#47", lines[0])
+
+    def test_no_manual_notable_allowlist(self):
+        report = issue("another/project", 42)
+        report["body"] = (
+            "Steps to Reproduce, Expected behavior, Actual behavior, Environment. "
+            "We measured 70 MiB RSS in a regression and found a root cause in "
+            "a source path. " + "Detailed investigation. " * 40
+        )
+        api, _ = mock_api(authored_issues=[report])
+        with patch.object(subject, "github_json", side_effect=api):
+            lines, selected = subject.notable_external_contributions()
+        self.assertIn("another/project#42", lines[0])
+        self.assertEqual(selected, {("another/project", 42)})
+
     def test_thread_last_updated_by_other_user_is_not_falsely_credited(self):
         item = issue("external/maintained", 8, updated="2026-10-27T00:00:00Z")
         api, _ = mock_api(commented_issues=[item], details={
