@@ -144,7 +144,15 @@ A JetBrains IDE plugin that exports real database table metadata and relationshi
 
 ---
 
-## Publications
+## Writing & Knowledge
+
+### Engineering Knowledge
+
+A living knowledge base of backend engineering, software architecture, distributed systems, and engineering patterns, organized for understanding and long-term reference.
+
+[Browse Engineering Knowledge](https://github.com/luceat-lux-vestra/engineering-knowledge)
+
+### Recent Publications
 
 <!-- LATEST-WRITING:START -->
 - [GitHub Actions CI Optimization — Measure What You Actually Reduce](https://blog.ox0.uk/github-actions-ci-optimization-measure-what-matters-en/) — 2026-11-14
