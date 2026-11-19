@@ -172,6 +172,8 @@ Automatically selected from public upstream issues and pull requests based on re
 
 <!-- OSS-NOTABLE:START -->
 - **Issue** · [JetBrains/jcef#47: \[remote\] RemoteClient.dispose() skips process-global MessageRouter config cleanup](https://github.com/JetBrains/jcef/issues/47) — 2026-10-22
+- **Issue** · [zed-industries/zed#61865: Document highlights query only the first capable language server, so a secondary server's highlights never appear](https://github.com/zed-industries/zed/issues/61865) — 2026-07-29
+- **Issue** · [zed-industries/zed#61863: Inlay hint label parts drop the LSP command field, so hint-embedded actions can never be invoked](https://github.com/zed-industries/zed/issues/61863) — 2026-07-29
 <!-- OSS-NOTABLE:END -->
 
 ### Recent Contributions
