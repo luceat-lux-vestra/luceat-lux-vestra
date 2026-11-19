@@ -166,6 +166,16 @@ A living knowledge base of backend engineering, software architecture, distribut
 
 ## Open Source Contributions
 
+### Notable Upstream Reports
+
+Automatically selected from public upstream issues and pull requests based on reproducibility, technical analysis, and empirical evidence; not manually pinned.
+
+<!-- OSS-NOTABLE:START -->
+- **Issue** · [JetBrains/jcef#47: \[remote\] RemoteClient.dispose() skips process-global MessageRouter config cleanup](https://github.com/JetBrains/jcef/issues/47) — 2026-10-22
+<!-- OSS-NOTABLE:END -->
+
+### Recent Contributions
+
 <!-- OSS-CONTRIBUTIONS:START -->
 - **Issue · Commented** · [WranglerLabs/repo-wrangler#48: Support hosting RepoWrangler under a subpath](https://github.com/WranglerLabs/repo-wrangler/issues/48) — 2026-11-18
 - **Issue** · [gateixeira/live-actions#27: Repository filter stays stale after workflow events from a new repository](https://github.com/gateixeira/live-actions/issues/27) — 2026-11-18
