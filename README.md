@@ -179,10 +179,10 @@ Automatically selected from public upstream issues and pull requests based on re
 ### Recent Contributions
 
 <!-- OSS-CONTRIBUTIONS:START -->
+- **Issue** · [gateixeira/live-actions#28: Missed workflow_run completion can leave runs permanently in_progress](https://github.com/gateixeira/live-actions/issues/28) — 2026-11-21
+- **Issue** · [yuin/rushdown#2: Safe Index/Segment APIs can invoke UB through unchecked string slicing](https://github.com/yuin/rushdown/issues/2) — 2026-11-21
 - **Issue · Commented** · [WranglerLabs/repo-wrangler#48: Support hosting RepoWrangler under a subpath](https://github.com/WranglerLabs/repo-wrangler/issues/48) — 2026-11-18
 - **Issue** · [gateixeira/live-actions#27: Repository filter stays stale after workflow events from a new repository](https://github.com/gateixeira/live-actions/issues/27) — 2026-11-18
-- **Issue** · [mermaid-js/mermaid#7565: Labels not visible in JCEF (IntelliJ) when Mermaid uses `foreignObject` HTML labels](https://github.com/mermaid-js/mermaid/issues/7565) — 2026-11-17
-- **Issue** · [usebruno/bruno-vscode#125: Proxy settings do not work at all — custom proxy (bruno.json) and system proxy env vars (HTTP_PROXY/HTTPS_PROXY/NO_PROXY) are ignored](https://github.com/usebruno/bruno-vscode/issues/125) — 2026-11-12
 - **Commented on Issue** · [usebruno/bruno#8576: System Proxy (PAC) mode is ~2s slower per request due to myIpAddress() calling out to 8.8.8.8:53](https://github.com/usebruno/bruno/issues/8576) — 2026-09-15
 - **Commented on Issue** · [spring-projects/spring-tools#1889: \[Question\] Any plans to support Zed editor?](https://github.com/spring-projects/spring-tools/issues/1889) — 2026-09-02
 <!-- OSS-CONTRIBUTIONS:END -->
